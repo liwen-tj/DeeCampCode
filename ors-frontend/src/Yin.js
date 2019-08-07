@@ -20,7 +20,7 @@ class Yin extends React.Component {
         super(props);
         this.state = {
             activeKey: '1',
-            scheduleValue: [],
+            scheduleValue: '[]',
         };
     };
 
