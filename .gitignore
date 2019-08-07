@@ -1,0 +1,31 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/ors-frontend/node_modules
+/ors-frontend/.pnp
+/ors-frontend/.pnp.js
+
+# testing
+/ors-frontend/coverage
+
+# production
+/ors-frontend/build
+
+# misc
+/ors-frontend/.DS_Store
+/ors-frontend/.env.local
+/ors-frontend/.env.development.local
+/ors-frontend/.env.test.local
+/ors-frontend/.env.production.local
+
+/ors-frontend/npm-debug.log*
+/ors-frontend/yarn-debug.log*
+/ors-frontend/yarn-error.log*
+
+# ide
+/ors-frontend/.idea/
+/ors-frontend/.vscode/
+.vscode/
+
+/ors_backend/data
+/ors_backend/model/predict/model.txt

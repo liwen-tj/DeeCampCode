@@ -1,0 +1,124 @@
+.OperationSchedule{
+  overflow:auto;
+  height:500px;
+  margin: 10px;
+  text-align: center;
+  border:0.5px solid;
+  border-radius:25px;
+  -moz-border-radius:25px;
+  border-color: white;
+}
+
+.OperationItem {
+  display: flex;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+}
+
+.TimeTag {
+  width: 2px;
+  height: 40px;
+  background: white;
+  position:relative;
+  top:-5px;
+}
+
+.OperationItemBody {
+  width: 100px;
+  height: 30px;
+  background: #508EEE;
+  display: inline-block;
+  *display: inline; 
+  zoom: 1; 
+  vertical-align: top;
+}
+
+@font-face {
+    font-family: 'baoziFont'; /* 自定义的字体名称; */
+    src: url('./utils/SOURCEHANSANSCN-EXTRALIGHT.OTF') format('truetype');  /* 自定义的字体的存放路径、格式; */
+}
+
+.bedInfo {
+  width: 60px;
+  border: none;
+  color: white;
+  background:#171E34;
+  z-index: 2;
+  position: sticky;
+  left:0;
+  font-family: "baoziFont";
+  font-size: "16px";
+}
+
+.timePoint {
+  height: 8px;
+  width: 8px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  left: -4px;
+  bottom: -4px;
+  font-family:"baoziFont";
+  font-size: "30px";
+}
+
+.timeTag {
+  transform: rotate(-30deg);
+  position: absolute;
+  left: -4px;
+  bottom: 0;
+  z-index: 3;
+  font-family:"baoziFont";
+  font-size: "30px";
+}
+
+.quarterCell {
+  width: 45px;
+  border:1px solid white;
+}
+
+/* .scheduleHeader {
+  background: #171E34;
+  border: solid gray;
+  border-width: 1px 0 1px 0;
+  color: white;
+  height: 50px;
+  z-index: 2;
+} */
+
+.scheduleHeader {
+  background: #171E34;
+  border: solid gray;
+  border-width: 0 0 1px 0;
+  color: white;
+  height: 50px;
+  z-index: 2;
+}
+
+.spaceRow {
+  background: #171E34;
+  height: 10px;
+  border: none;
+  
+}
+
+.dataRow {
+  background: #2A383F;
+  height: 30px;
+  border: 0.05px solid;
+  border-color: #607F89;
+}
+
+.BedScheduleTd {
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  margin-top: -1px;
+}
+
+.stickyRow {
+  position:sticky;
+  top:0;
+}
