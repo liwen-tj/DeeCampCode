@@ -6,7 +6,7 @@ import './Yin.css';
 import { Tabs, notification, Button } from 'antd';
 import API from './utils/api.js';
 import Headers from './utils/headers.js';
-
+import { LineChart, Pie } from './myChart';
 
 const { TabPane } = Tabs;
 
@@ -76,7 +76,7 @@ class Yin extends React.Component {
                     <img src={logo} className='Yinlogo' />
                 </div>
                 <Tabs activeKey={this.state.activeKey} onChange={this.change} tabBarStyle={{color:'white'}}>
-                    <TabPane tab="患者总览" key="1">
+                    <TabPane style={{background:"#ffffff"}} tab="患者总览" key="1">
                         <div id={"editableTable"} className='predictOutput'>
                             <EditableTable pagination={{ pageSize: 10 }} scroll={{ y: 240 }} />
                         </div>
@@ -86,6 +86,12 @@ class Yin extends React.Component {
                     </TabPane>
                     <TabPane tab="手术室调度排班表" key="2">
                         <Jia scheduleValue={this.state.scheduleValue}/>
+                        <div style={{ width: "500px", display: "inline-block", marginLeft: "250px" }}>
+                            <LineChart />
+                        </div>
+                        <div style={{ width: "800px", display: "inline-block" }}>
+                            <Pie />
+                        </div>
                     </TabPane>
                 </Tabs>
             </div>

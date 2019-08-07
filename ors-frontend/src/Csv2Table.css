@@ -19,8 +19,24 @@
     margin-right: 1%;
 }
 .wordFont {
+    float: left;
     font-weight:bold;
-    font-size: 18px;
+    font-size: 15px;
     margin-left: 1%;
+    font-family:"baoziFont1";
+    color: black;
+    letter-spacing: 2px;
+    margin-top: 10px;
 }
-
+@font-face {
+    font-family: 'baoziFont1'; /* 自定义的字体名称; */
+    src: url('./utils/SOURCEHANSANSCN-EXTRALIGHT.OTF') format('truetype');  /* 自定义的字体的存放路径、格式; */
+}
+@font-face {
+    font-family: 'baoziFont2'; /* 自定义的字体名称; */
+    src: url('./utils/SOURCEHANSANSCN-LIGHT.OTF') format('truetype');  /* 自定义的字体的存放路径、格式; */
+}
+@font-face {
+    font-family: 'baoziFont3'; /* 自定义的字体名称; */
+    src: url('./utils/SOURCEHANSANSCN-REGULAR.OTF') format('truetype');  /* 自定义的字体的存放路径、格式; */
+}

@@ -29,3 +29,8 @@
 
 /ors_backend/data
 /ors_backend/model/predict/model.txt
+
+/ors-frontend/src/utils/SOURCEHANSANSCN-LIGHT.OTF
+/ors-frontend/src/utils/SOURCEHANSANSCN-EXTRALIGHT.OTF
+/ors-frontend/src/utils/SOURCEHANSANSCN-REGULAR.OTF
+
