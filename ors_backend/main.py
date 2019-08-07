@@ -105,7 +105,7 @@ def preview_pdf():
     with open(csv_file, 'w') as csvfile:
         fieldnames = ['orId', 'startTime', 'predTime', 'id', 'name',
                       'gender', 'age', 'operatingName', 'department', 
-                      'doctorName', 'anaesthetic', 'recoverDuration', 'cleanDuration']
+                      'doctorName', 'anaesthetic', 'recoverDuration', 'cleanDuration', 'key', 'rank']
         headername = {
             'orId': '手术室',
             'startTime': '开始时间', 
@@ -119,7 +119,9 @@ def preview_pdf():
             'doctorName': '医生', 
             'anaesthetic': '麻醉方式', 
             'recoverDuration': '恢复时间',  
-            'cleanDuration': '清洁时间'
+            'cleanDuration': '清洁时间',
+            'key': '编号',
+            'rank': '手术等级'
         }
         
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)

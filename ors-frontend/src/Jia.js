@@ -125,6 +125,9 @@ class Jia extends Component {
     };
     
     preview = () => { // 预览
+        let myscheduleValue = JSON.parse(this.props.scheduleValue);
+        let values1 = myscheduleValue.sort(this.compare("orId", "startTime"));
+        console.log(values1);
         fetch(API + '/preview', {
             method: 'POST',
             headers: {
@@ -134,7 +137,7 @@ class Jia extends Component {
                 'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
             },
             responseType: 'blob',
-            body: JSON.stringify(this.state.sortdata)
+            body: JSON.stringify(values1)
         }).then(res => {
             if (res.status === 200) {
                 return res.blob()
@@ -264,8 +267,8 @@ class Jia extends Component {
                 "cleanDuration": 30
             }
         ];
-        console.log(this.props.scheduleValue);
-        console.log(typeof (this.props.scheduleValue));
+        // console.log(this.props.scheduleValue);
+        // console.log(typeof (this.props.scheduleValue));
         let myscheduleValue = JSON.parse(this.props.scheduleValue);
         let values1 = myscheduleValue.sort(this.compare("orId", "startTime"));
         // let values1 = values.sort(this.compare("orId", "startTime"));
