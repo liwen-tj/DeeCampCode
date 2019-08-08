@@ -75,7 +75,7 @@ def jieshi(cssj):
 
     lo=[]
     for i in range(len(li)):
-        exp = explainer.explain_instance( data_X[li[i]],gbm.predict, num_features=5 )
+        exp = explainer.explain_instance(data_X[li[i]],gbm.predict, num_features=5)
         print(exp.as_list())
         lo.append(lo)
     return lo
