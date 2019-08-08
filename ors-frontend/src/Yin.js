@@ -86,10 +86,10 @@ class Yin extends React.Component {
                     </TabPane>
                     <TabPane tab="手术室调度排班表" key="2">
                         <Jia scheduleValue={this.state.scheduleValue}/>
-                        <div style={{ width: "500px", display: "inline-block", marginLeft: "250px" }}>
+                        <div style={{ width: "30%", display: "inline-block", marginLeft: "12%" }}>
                             <LineChart />
                         </div>
-                        <div style={{ width: "800px", display: "inline-block" }}>
+                        <div style={{ marginLeft: "-12%", width: "55%", display: "inline-block" }}>
                             <Pie />
                         </div>
                     </TabPane>

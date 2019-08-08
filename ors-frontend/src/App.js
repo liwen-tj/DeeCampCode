@@ -56,11 +56,13 @@ class App extends React.Component {
         <div className="page">
           <div className="head">
             <Upload {...props}>
-              <Button className="button1" type="primary" size="large">
+              <Button style={{ marginTop: "250%", marginLeft:"110%" }} type="primary" size="large">
                 <Icon type="upload" /> 上传历史患者信息表
               </Button>
             </Upload>
-            <Button className="button2" type="primary" size="large" onClick={this.showDrawer}>构建调度表</Button>
+            <Button style={{ marginTop: "32.5%", marginLeft: "25%" }} type="primary" size="large" onClick={this.showDrawer}>
+              构建调度表
+              </Button>
           </div>
           <Drawer
             title="配置信息"

@@ -33,7 +33,7 @@ def hospital_setting():
     key = result_data.key
     result_data = result_data.drop("key", axis=1)
     result_data.insert(0, "key", key)
-    print(result_data.to_json(orient="records",force_ascii=False))
+    # print(result_data.to_json(orient="records",force_ascii=False))
     return result_data.to_json(orient="records",force_ascii=False)
 
 @app.route('/schedule', methods=['POST'])

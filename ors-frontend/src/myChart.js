@@ -17,176 +17,120 @@ class Pie extends Component {
             }
         };
         return {
-             series: [
-            //     {name: '第一个圆环',
-            //     type: 'pie',
-            //     clockWise: false,
-            //     radius: [70, 80],
-            //     itemStyle: dataStyle,
-            //     hoverAnimation: false,
-            //     center: ['15%', '50%'],
-            //     data: [{
-            //         value: 0.5,
-            //         label: {
-            //             normal: {
-            //                 rich: {
-            //                     a: {
-            //                         color: '#3a7ad5',
-            //                         align: 'center',
-            //                         fontSize: 20,
-            //                         fontWeight: "bold"
-            //                     },
-            //                     b: {
-            //                         color: '#fff',
-            //                         align: 'center',
-            //                         fontSize: 16
-            //                     }
-            //                 },
-            //                 formatter: function (params) {
-            //                     return "{b|在线统计}\n\n" + "{a|" + params.value + "个}" + "\n\n{b|增长2%}";
-            //                 },
-            //                 position: 'center',
-            //                 show: true,
-            //                 textStyle: {
-            //                     fontSize: '14',
-            //                     fontWeight: 'normal',
-            //                     color: '#fff'
-            //                 }
-            //             }
-            //         },
-            //         itemStyle: {
-            //             normal: {
-            //                 color: '#2c6cc4',
-            //                 shadowColor: '#2c6cc4',
-            //                 shadowBlur: 0
-            //             }
-            //         }
-            //     }, {
-            //         value: 0.5,
-            //         name: 'invisible',
-            //         itemStyle: {
-            //             normal: {
-            //                 color: '#24375c'
-            //             },
-            //             emphasis: {
-            //                 color: '#24375c'
-            //             }
-            //         }
-            //     }]
-            // }, 
-            {
-                name: '第二个圆环',
-                type: 'pie',
-                clockWise: false,
-                radius: [70, 80],
-                itemStyle: dataStyle,
-                hoverAnimation: false,
-                center: ['50%', '50%'],
-                data: [{
-                    value: parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["orRatio"] * 100),
-                    label: {
-                        normal: {
-                            rich: {
-                                a: {
-                                    color: '#d03e93',
-                                    align: 'center',
-                                    fontSize: 20,
-                                    fontWeight: "bold"
+            series: [
+                {
+                    name: '第二个圆环',
+                    type: 'pie',
+                    clockWise: false,
+                    radius: [70, 80],
+                    itemStyle: dataStyle,
+                    hoverAnimation: false,
+                    center: ['50%', '50%'],
+                    data: [{
+                        value: parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["orRatio"] * 100),
+                        label: {
+                            normal: {
+                                rich: {
+                                    a: {
+                                        color: '#d03e93',
+                                        align: 'center',
+                                        fontSize: 20,
+                                        fontWeight: "bold"
+                                    },
+                                    b: {
+                                        color: '#fff',
+                                        align: 'center',
+                                        fontSize: 16
+                                    }
                                 },
-                                b: {
-                                    color: '#fff',
-                                    align: 'center',
-                                    fontSize: 16
+                                formatter: function (params) {
+                                    return "\n{b|手术室整体利用率}\n\n" + "{a|" + params.value + "%}";
+                                },
+                                position: 'center',
+                                show: true,
+                                textStyle: {
+                                    fontSize: '14',
+                                    fontWeight: 'normal',
+                                    color: '#fff'
                                 }
-                            },
-                            formatter: function (params) {
-                                return "\n{b|手术室整体利用率}\n\n" + "{a|" + params.value + "%}";
-                            },
-                            position: 'center',
-                            show: true,
-                            textStyle: {
-                                fontSize: '14',
-                                fontWeight: 'normal',
-                                color: '#fff'
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#ef45ac',
+                                shadowColor: '#ef45ac',
+                                shadowBlur: 0
                             }
                         }
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: '#ef45ac',
-                            shadowColor: '#ef45ac',
-                            shadowBlur: 0
-                        }
-                    }
-                }, {
-                    value: 100-parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["orRatio"] * 100),
-                    name: 'invisible',
-                    itemStyle: {
-                        normal: {
-                            color: '#412a4e'
-                        },
-                        emphasis: {
-                            color: '#412a4e'
-                        }
-                    }
-                }]
-            }, {
-                name: '第三个圆环',
-                type: 'pie',
-                clockWise: false,
-                radius: [70, 80],
-                itemStyle: dataStyle,
-                hoverAnimation: false,
-                center: ['85%', '50%'],
-                data: [{
-                    value: parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["recoverRoomRatio"] * 100),
-                    label: {
-                        normal: {
-                            rich: {
-                                a: {
-                                    color: '#603dd0',
-                                    align: 'center',
-                                    fontSize: 20,
-                                    fontWeight: "bold"
-                                },
-                                b: {
-                                    color: '#fff',
-                                    align: 'center',
-                                    fontSize: 16
-                                }
+                    }, {
+                        value: 100 - parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["orRatio"] * 100),
+                        name: 'invisible',
+                        itemStyle: {
+                            normal: {
+                                color: '#412a4e'
                             },
-                            formatter: function (params) {
-                                return "\n{b|手术室内复苏比率}\n\n" + "{a|" + params.value + "%}";
-                            },
-                            position: 'center',
-                            show: true,
-                            textStyle: {
-                                fontSize: '14',
-                                fontWeight: 'normal',
-                                color: '#fff'
+                            emphasis: {
+                                color: '#412a4e'
                             }
                         }
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: '#613fd1',
-                            shadowColor: '#613fd1',
-                            shadowBlur: 0
-                        }
-                    }
+                    }]
                 }, {
-                    value: 100-parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["recoverRoomRatio"] * 100),
-                    name: 'invisible',
-                    itemStyle: {
-                        normal: {
-                            color: '#453284'
+                    name: '第三个圆环',
+                    type: 'pie',
+                    clockWise: false,
+                    radius: [70, 80],
+                    itemStyle: dataStyle,
+                    hoverAnimation: false,
+                    center: ['85%', '50%'],
+                    data: [{
+                        value: parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["recoverRoomRatio"] * 100),
+                        label: {
+                            normal: {
+                                rich: {
+                                    a: {
+                                        color: '#603dd0',
+                                        align: 'center',
+                                        fontSize: 20,
+                                        fontWeight: "bold"
+                                    },
+                                    b: {
+                                        color: '#fff',
+                                        align: 'center',
+                                        fontSize: 16
+                                    }
+                                },
+                                formatter: function (params) {
+                                    return "\n{b|手术室内复苏比率}\n\n" + "{a|" + params.value + "%}";
+                                },
+                                position: 'center',
+                                show: true,
+                                textStyle: {
+                                    fontSize: '14',
+                                    fontWeight: 'normal',
+                                    color: '#fff'
+                                }
+                            }
                         },
-                        emphasis: {
-                            color: '#453284'
+                        itemStyle: {
+                            normal: {
+                                color: '#613fd1',
+                                shadowColor: '#613fd1',
+                                shadowBlur: 0
+                            }
                         }
-                    }
+                    }, {
+                        value: 100 - parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["recoverRoomRatio"] * 100),
+                        name: 'invisible',
+                        itemStyle: {
+                            normal: {
+                                color: '#453284'
+                            },
+                            emphasis: {
+                                color: '#453284'
+                            }
+                        }
+                    }]
                 }]
-            }]
         }
     }
 
@@ -203,6 +147,7 @@ class Pie extends Component {
     }
 }
 
+
 class LineChart extends Component {
 
     componentDidMount() { }
@@ -216,7 +161,7 @@ class LineChart extends Component {
 
         for (let i = 0; i < data.length; i++) {
             dataShadow.push(yMax);
-            dataAxis.push(i + 1);
+            dataAxis.push(String(i + 1) + "号手术室");
         }
         return {
             title: {
@@ -225,13 +170,20 @@ class LineChart extends Component {
                     color: '#fff'
                 }
             },
+            grid: { // 控制图的大小，调整下面这些值就可以，
+                x: 100,
+                // x2: 40,
+                y2: 80// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+            },
             xAxis: {
                 data: dataAxis,
                 axisLabel: {
-                    inside: true,
+                    inside: false,
                     textStyle: {
                         color: '#fff'
-                    }
+                    },
+                    interval:0,  
+                    rotate:35
                 },
                 axisTick: {
                     show: false
@@ -242,6 +194,9 @@ class LineChart extends Component {
                 z: 10
             },
             yAxis: {
+                splitLine: {
+                    show: false
+                },
                 axisLine: {
                     show: false
                 },
@@ -250,7 +205,7 @@ class LineChart extends Component {
                 },
                 axisLabel: {
                     textStyle: {
-                        color: '#999'
+                        color: '#fff'
                     }
                 }
             },
@@ -260,20 +215,13 @@ class LineChart extends Component {
                 }
             ],
             series: [
-                { // For shadow
-                    type: 'bar',
-                    itemStyle: {
-                        normal: { color: 'rgba(0,0,0,0.05)' }
-                    },
-                    barGap: '-100%',
-                    barCategoryGap: '40%',
-                    data: dataShadow,
-                    animation: false
-                },
                 {
                     type: 'bar',
+                    barWidth: 10,
+                    barCategoryGap: 5,
                     itemStyle: {
                         normal: {
+                            barBorderRadius: 5,
                             color: new echarts.graphic.LinearGradient(
                                 0, 0, 0, 1,
                                 [
@@ -282,15 +230,6 @@ class LineChart extends Component {
                                 ]
                             )
                         },
-                        // emphasis: {
-                        //     color: new echarts.graphic.LinearGradient(
-                        //         0, 0, 0, 1,
-                        //         [
-                        //             { offset: 0, color: '#a871ea' },
-                        //             { offset: 1, color: '#ea38bf' }
-                        //         ]
-                        //     )
-                        // }
                     },
                     data: data
                 }

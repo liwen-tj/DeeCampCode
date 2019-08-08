@@ -276,7 +276,7 @@ class Jia extends Component {
         return (
             <div>
                 <OperationScheduleTable schedules={scheds} />
-                <Button type="primary" onClick={this.preview}>预览</Button>
+                <Button type="primary" onClick={this.preview} style={{marginLeft:"95%"}}>预览</Button>
             </div>
         )
     };
