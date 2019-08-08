@@ -40,13 +40,13 @@ class Yin extends React.Component {
         // let arr2 = localStorage.getItem("predict");
         delete setting_json.file;//删除json中的key:value
 
-        console.log(setting_json);
-        console.log(predict_array);
-        console.log(Array.isArray(setting_json));
-        console.log(Array.isArray(predict_array));
+        // console.log(setting_json);
+        // console.log(predict_array);
+        // console.log(Array.isArray(setting_json));
+        // console.log(Array.isArray(predict_array));
 
         predict_array.push(setting_json);//给predict_array后添加setting_json,返回的是数组的长度
-        console.log(predict_array);
+        // console.log(predict_array);
 
         const that = this;
         fetch(API + '/schedule', Headers(predict_array)).then(res => {
@@ -56,11 +56,13 @@ class Yin extends React.Component {
         }).then(function (json) {
             let length = json.length;
             let tablevalue = JSON.stringify(json.slice(0, length - 1));
+            let data = JSON.stringify(json.slice(length - 1, length));
+            // console.log(data);
             that.setState({
-                scheduleValue: tablevalue
+                scheduleValue: tablevalue,
             });
-            localStorage.setItem("schedule_output", tablevalue);
-            localStorage.setItem("statistic", JSON.stringify(json.slice(length - 1, length)));
+            // localStorage.setItem("schedule_output", tablevalue);
+            // localStorage.setItem("statistic", JSON.stringify(json.slice(length - 1, length)));
         })
         // var schedule_output = localStorage.getItem("schedule_output");
         // console.log(schedule_output);
@@ -100,6 +102,7 @@ class Yin extends React.Component {
                 </Tabs>
             </div>
         );
+
     }
 }
 

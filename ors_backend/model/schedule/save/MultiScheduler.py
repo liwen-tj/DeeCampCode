@@ -294,7 +294,7 @@ def Scheduler(input_json, input_config):
     "overtimeRatio": overtimeRatio
     }
 
-    output_overall = json.dumps(output_overall)
+    # output_overall = json.dumps([output_overall])
     return output_json, output_overall
 
 # if __name__ == '__main__':
