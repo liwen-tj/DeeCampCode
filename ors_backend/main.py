@@ -120,8 +120,8 @@ def preview_pdf():
             'anaesthetic': '麻醉方式', 
             'recoverDuration': '恢复时间',  
             'cleanDuration': '清洁时间',
-            'key': '编号',
-            'rank': '手术等级'
+            'key': 'key',
+            'rank': 'rank'
         }
         
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)

@@ -3,6 +3,8 @@
 import pdfkit as pdf
 import pandas as pd
 import os
+import numpy as np
+
 
 def csv2pdf(csv_file):
     HTML_TEMPLATE1 = '''<html>
@@ -46,11 +48,17 @@ def csv2pdf(csv_file):
     pdf_file = csv_file[:-3] + 'pdf'
 
     df = pd.read_csv(csv_file, sep=',', encoding='gbk')
+    print(df.head())
+    df.drop(columns=['key', 'rank'], inplace=True)
+    df.index = np.arange(1, len(df) + 1) # 设置从1开始
+    print(df.head())
+
     df.to_html(html_file, justify='center')
     formatter = ''
     with open(html_file) as fr:
         tmp = fr.read()
         formatter = HTML_TEMPLATE1 + tmp + HTML_TEMPLATE2
+
     with open(html_file, 'w') as fw:
         fw.write(formatter)
 
