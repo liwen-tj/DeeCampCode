@@ -24,7 +24,7 @@
     font-size: 15px;
     margin-left: 1%;
     font-family:"baoziFont1";
-    color: black;
+    color: white;
     letter-spacing: 2px;
     margin-top: 10px;
 }
@@ -39,4 +39,20 @@
 @font-face {
     font-family: 'baoziFont3'; /* 自定义的字体名称; */
     src: url('./utils/SOURCEHANSANSCN-REGULAR.OTF') format('truetype');  /* 自定义的字体的存放路径、格式; */
+}
+
+.EditableTable thead th {
+    background: #508EEE !important;
+}
+
+.EditableTable tbody td {
+    background: #171E43 !important;
+}
+
+.ant-table-placeholder {
+    background: #171E43 !important;
+}
+
+.ant-table-placeholder p {
+    color: white !important;
 }
