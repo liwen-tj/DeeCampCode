@@ -1,8 +1,6 @@
 .Yinlogo{
-    animation: App-logo-spin infinite 20s linear;
-    pointer-events: none;
-    width: 5%;
-    height: 5%;
+    width: 100%;
+    height: 2%;
 }
 .predictOutput{
     margin-left: 1%;
@@ -16,11 +14,11 @@
     margin-left: 2%;
     margin-right: 2%;
 }
-.frontDIV{
-    background: -webkit-linear-gradient(left, #4F41E1, #508EEE) no-repeat;
-    /*background: #000;*/
-    height: 5%;
-}
+/*.frontDIV{*/
+    /*background: -webkit-linear-gradient(left, #4F41E1, #508EEE) no-repeat;*/
+    /*!*background: #000;*!*/
+    /*height: 5%;*/
+/*}*/
 .chart {
     /* height: 300px;
     width: 200px; */

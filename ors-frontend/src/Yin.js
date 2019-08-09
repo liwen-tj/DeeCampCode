@@ -1,12 +1,12 @@
 import Jia from './Jia';
 import React from 'react';
 import EditableTable from './Csv2Table';
-import logo from './logo.svg';
 import './Yin.css';
 import { Tabs, notification, Button } from 'antd';
 import API from './utils/api.js';
 import Headers from './utils/headers.js';
 import { LineChart, Pie } from './myChart';
+import bar from './img/bar.jpeg';
 
 const { TabPane } = Tabs;
 
@@ -21,6 +21,7 @@ class Yin extends React.Component {
         this.state = {
             activeKey: '1',
             scheduleValue: '[]',
+            chartData: '[]'
         };
     };
 
@@ -28,11 +29,11 @@ class Yin extends React.Component {
         // localStorage.setItem("predict", EditableTable.dataSource);
         // console.log(EditableTable.dataSource);
         this.setState({ activeKey: '2' });
-        // notification.open({
-        //     message: '提交成功！',
-        //     description:
-        //         '患者信息成功上传，正在生成调度表。',
-        // });
+        notification.open({
+            message: '提交成功！',
+            description: '正在生成调度表',
+            duration: 7
+        });
 
         let setting_json = JSON.parse(localStorage.getItem("setting"));
         let predict_array = JSON.parse(localStorage.getItem("predict"));
@@ -59,6 +60,7 @@ class Yin extends React.Component {
             // console.log(data);
             that.setState({
                 scheduleValue: tablevalue,
+                chartData: JSON.stringify(json.slice(length - 1, length))
             });
             console.log("schedule done.")
             localStorage.setItem("schedule_output", tablevalue);
@@ -78,8 +80,8 @@ class Yin extends React.Component {
     render() {
         return (
             <div style={{ "backgroundColor": '#202743'}}>
-                <div className='frontDIV'>
-                    <img src={logo} className='Yinlogo' />
+                <div>
+                    <img src={bar} className='Yinlogo' />
                 </div>
                 <Tabs activeKey={this.state.activeKey} onChange={this.change} tabBarStyle={{color:'white'}}>
                     <TabPane tab="患者总览" key="1">
@@ -87,16 +89,16 @@ class Yin extends React.Component {
                             <EditableTable pagination={{ pageSize: 10 }} scroll={{ y: 240 }} />
                         </div>
                         <div>
-                            <Button onClick={this.handleClick} type="primary" style={{ marginBottom: 16 }} className="submit GradientButton"> 提交 </Button>
+                            <Button onClick={this.handleClick} type="primary" style={{ marginBottom: 16 }} className="submit GradientButton"> 开始调度 </Button>
                         </div>
                     </TabPane>
                     <TabPane tab="手术室调度排班表" key="2">
                         <Jia scheduleValue={this.state.scheduleValue}/>
                         <div style={{ width: "30%", display: "inline-block", marginLeft: "12%" }}>
-                            <LineChart />
+                            <LineChart chartData = {this.state.chartData}/>
                         </div>
                         <div style={{ marginLeft: "-12%", width: "55%", display: "inline-block" }}>
-                            <Pie />
+                            <Pie chartData = {this.state.chartData}/>
                         </div>
                     </TabPane>
                 </Tabs>

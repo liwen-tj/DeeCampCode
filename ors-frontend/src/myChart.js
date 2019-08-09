@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import echarts from 'echarts/lib/echarts';
 
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
 class Pie extends Component {
-    getOption() {
-        while(!localStorage.getItem("statistic"))
-            console.log("wait");
+    constructor(props) {
+        super(props)
+    }
+    // while(!localStorage.getItem("statistic"))
+    //     console.log("wait");
+    render() {
         let dataStyle = {
             normal: {
                 label: {
@@ -18,7 +24,15 @@ class Pie extends Component {
                 shadowColor: '#203665'
             }
         };
-        return {
+        let ChartData = JSON.parse(this.props.chartData);
+        let Chart1 = [0];
+        let Chart2 = [0];
+        if (ChartData.length != 0) {
+            Chart1 = ChartData[0]["orRatio"];
+            Chart2 = ChartData[0]["recoverRoomRatio"];
+        }
+
+        let option = {
             series: [
                 {
                     name: '第二个圆环',
@@ -29,7 +43,7 @@ class Pie extends Component {
                     hoverAnimation: false,
                     center: ['50%', '50%'],
                     data: [{
-                        value: parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["orRatio"] * 100),
+                        value: parseInt(Chart1 * 100),
                         label: {
                             normal: {
                                 rich: {
@@ -65,7 +79,7 @@ class Pie extends Component {
                             }
                         }
                     }, {
-                        value: 100 - parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["orRatio"] * 100),
+                        value: 100 - parseInt(Chart1 * 100),
                         name: 'invisible',
                         itemStyle: {
                             normal: {
@@ -85,7 +99,7 @@ class Pie extends Component {
                     hoverAnimation: false,
                     center: ['85%', '50%'],
                     data: [{
-                        value: parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["recoverRoomRatio"] * 100),
+                        value: parseInt(Chart2 * 100),
                         label: {
                             normal: {
                                 rich: {
@@ -121,7 +135,7 @@ class Pie extends Component {
                             }
                         }
                     }, {
-                        value: 100 - parseInt(JSON.parse(localStorage.getItem("statistic"))[0]["recoverRoomRatio"] * 100),
+                        value: 100 - parseInt(Chart2 * 100),
                         name: 'invisible',
                         itemStyle: {
                             normal: {
@@ -134,42 +148,43 @@ class Pie extends Component {
                     }]
                 }]
         }
-    }
-
-    render() {
         return (
             <div>
                 <ReactEcharts
-                    option={this.getOption()}
+                    option={option}
                     notMerge={true}
                     lazyUpdate={true}
                 />
             </div>
         )
-    }
+    };
+
 }
 
-
 class LineChart extends Component {
+        // while (!localStorage.getItem("statistic"))
+        //     console.log("wait");
+    constructor(props){
+        super(props)
+    }
 
-    componentDidMount() { }
-
-    getOption() {
-        while(!localStorage.getItem("statistic"))
-            console.log("wait");
-        let data = JSON.parse(localStorage.getItem("statistic"))[0]["extraHourRatio"];
-        console.log(data);
+    render() {
+        console.log(this.props.chartData);
+        let data = [0];
+        if (JSON.parse(this.props.chartData).length != 0)
+            data = JSON.parse(this.props.chartData)[0]["extraHours"];
+        // console.log(data);
         let dataAxis = [];
         let yMax = 1;
         let dataShadow = [];
 
         for (let i = 0; i < data.length; i++) {
             dataShadow.push(yMax);
-            dataAxis.push(String(i + 1) + "号手术室");
+            dataAxis.push(String(i + 1) + "号");
         }
-        return {
+        let option = {
             title: {
-                text: '手术室利用率',
+                text: '手术室加班时间',
                 textStyle: {
                     color: '#fff'
                 }
@@ -186,8 +201,8 @@ class LineChart extends Component {
                     textStyle: {
                         color: '#fff'
                     },
-                    interval:0,  
-                    rotate:30
+                    interval: 0,
+                    rotate: 30
                 },
                 axisTick: {
                     show: false
@@ -239,13 +254,10 @@ class LineChart extends Component {
                 }
             ]
         }
-    }
-
-    render() {
         return (
             <div>
                 <ReactEcharts
-                    option={this.getOption()}
+                    option={option}
                     notMerge={true}
                     lazyUpdate={true}
                 />
