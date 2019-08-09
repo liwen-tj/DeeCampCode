@@ -20,7 +20,11 @@ class OperationItem extends Component {
             visible: false,
         });
     };
+
+    
     render() {
+        console.log(this.props.operationDuration, this.props.recoverDuration, this.props.cleanDuration);
+
         return (<div className="OperationItem"
             style={{ left: this.props.beginIndex * unitPx + "px" }}>
             <div className="TimeTag">
@@ -36,6 +40,7 @@ class OperationItem extends Component {
             <div className="OperationItemBody"
                 style={{ width: this.props.cleanDuration * unitPx + "px", background: '#74EDDA' }}>
             </div>
+
             <div className="TimeTag">
             </div>
             <Drawer
@@ -52,6 +57,7 @@ class OperationItem extends Component {
 }
 
 function OperationScheduleTable(props) {
+    console.log(props.schedules);
     return (<div>
         <div className={"OperationSchedule"}>
             <table style={{ tableLayout: "fixed", width: "200px" }}>
@@ -96,7 +102,7 @@ function OperationScheduleTable(props) {
                                                     secondInfo={x.secondInfo}
                                                     thirdInfo={x.thirdInfo}
                                                     recoverDuration={x.recoverDuration}
-                                                    cleanDuration={x.recoverDuration} />
+                                                    cleanDuration={x.cleanDuration} />
                                             })
                                         }
                                     </div>
@@ -167,14 +173,12 @@ class Jia extends Component {
 
     genSchedules(data) { // data: values1
         if (data.length == 0) { return [] }
+        console.log(data);
         let orid = data[0]['orId'];
         let index = 0;
         let result = [{ 'roomInfo': 'Room ' + orid, 'operation': [] }];
         for (var dataindex in data) {
             let x = data[dataindex];
-            console.log(x);
-            console.log(result);
-            console.log('---------------------\n');
             let tmp = {};
             tmp['patientName'] = x['name'] + " " + x['startTime'];
             tmp['secondInfo'] = x['name'] + " " + x['startTime'] + " " + x['predTime'] + "分钟 " + x['operatingName'];
@@ -197,82 +201,15 @@ class Jia extends Component {
                 });
             }
         }
+        console.log(result);
         return result;
     }
 
     render() {
-        let values = [ // 数据从localStorage中取出来
-            {
-                "key": 3, // 表格编号
-                "id": "1",
-                "name": "张三",
-                "gender": "男",
-                "age": "70",
-                "department": "心血管科",
-                "operatingName": "心脏搭桥手术",
-                "anaesthetic": "全身麻醉",
-                "doctorName": "李四",
-                "predTime": 120, // 分钟
-                "orId": 1, //从1开始
-                "startTime": "15:30",
-                "recoverDuration": 20, // 分钟
-                "cleanDuration": 20 // 分钟
-            },
-            {
-                "key": 4,
-                "id": "2",
-                "name": "王二",
-                "gender": "女",
-                "age": "23",
-                "department": "妇产科",
-                "operatingName": "剖腹产手术",
-                "anaesthetic": "全身麻醉",
-                "doctorName": "王小二",
-                "predTime": 100,
-                "orId": 2,
-                "startTime": "15:00",
-                "recoverDuration": 10,
-                "cleanDuration": 30
-            },
-            {
-                "key": 1,
-                "id": "1",
-                "name": "李一",
-                "gender": "男",
-                "age": "50",
-                "department": "心血管科",
-                "operatingName": "心脏搭桥手术",
-                "anaesthetic": "全身麻醉",
-                "doctorName": "王五",
-                "predTime": 100,
-                "orId": 1,
-                "startTime": "8:30",
-                "recoverDuration": 20,
-                "cleanDuration": 30
-            },
-            {
-                "key": 2,
-                "id": "1",
-                "name": "赵赵",
-                "gender": "男",
-                "age": "50",
-                "department": "心血管科",
-                "operatingName": "心脏搭桥手术",
-                "anaesthetic": "全身麻醉",
-                "doctorName": "王五",
-                "predTime": 100,
-                "orId": 1,
-                "startTime": "10:30",
-                "recoverDuration": 20,
-                "cleanDuration": 30
-            }
-        ];
-        // console.log(this.props.scheduleValue);
-        // console.log(typeof (this.props.scheduleValue));
         let myscheduleValue = JSON.parse(this.props.scheduleValue);
         let values1 = myscheduleValue.sort(this.compare("orId", "startTime"));
-        // let values1 = values.sort(this.compare("orId", "startTime"));
         let scheds = this.genSchedules(values1);
+        console.log(scheds);
         return (
             <div>
                 <OperationScheduleTable schedules={scheds} />

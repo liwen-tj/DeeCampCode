@@ -41,6 +41,7 @@ def hospital_setting():
 
 @app.route('/schedule', methods=['POST'])
 def table():
+    print("schedule executing...")
     input_overall = request.get_json()
     input_length = len(input_overall)
     # 患者信息
@@ -58,7 +59,7 @@ def table():
     output_json = json.loads(output_json)
     output_json.append(output_overall)
     # print(output_json)
-
+    print("schedule done")
     return jsonify(output_json)
 
 def fakeSchefule(input_json, input_config):

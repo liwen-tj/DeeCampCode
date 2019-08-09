@@ -47,7 +47,7 @@ class Yin extends React.Component {
 
         predict_array.push(setting_json);//给predict_array后添加setting_json,返回的是数组的长度
         // console.log(predict_array);
-
+        console.log("executing schedule...")
         const that = this;
         fetch(API + '/schedule', Headers(predict_array)).then(res => {
             if (res.status === 200) {
@@ -60,6 +60,7 @@ class Yin extends React.Component {
             that.setState({
                 scheduleValue: tablevalue,
             });
+            console.log("schedule done.")
             localStorage.setItem("schedule_output", tablevalue);
             localStorage.setItem("statistic", JSON.stringify(json.slice(length - 1, length)));
         })
