@@ -56,13 +56,12 @@ class Yin extends React.Component {
         }).then(function (json) {
             let length = json.length;
             let tablevalue = JSON.stringify(json.slice(0, length - 1));
-            let data = JSON.stringify(json.slice(length - 1, length));
             // console.log(data);
             that.setState({
                 scheduleValue: tablevalue,
             });
-            // localStorage.setItem("schedule_output", tablevalue);
-            // localStorage.setItem("statistic", JSON.stringify(json.slice(length - 1, length)));
+            localStorage.setItem("schedule_output", tablevalue);
+            localStorage.setItem("statistic", JSON.stringify(json.slice(length - 1, length)));
         })
         // var schedule_output = localStorage.getItem("schedule_output");
         // console.log(schedule_output);
