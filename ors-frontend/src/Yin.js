@@ -28,11 +28,11 @@ class Yin extends React.Component {
         // localStorage.setItem("predict", EditableTable.dataSource);
         // console.log(EditableTable.dataSource);
         this.setState({ activeKey: '2' });
-        // notification.open({
-        //     message: '提交成功！',
-        //     description:
-        //         '患者信息成功上传，正在生成调度表。',
-        // });
+        notification.open({
+            message: '提交成功！',
+            description: '正在生成调度表',
+            duration: 7
+        });
 
         let setting_json = JSON.parse(localStorage.getItem("setting"));
         let predict_array = JSON.parse(localStorage.getItem("predict"));
