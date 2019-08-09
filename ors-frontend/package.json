@@ -8,6 +8,8 @@
     "bizcharts": "^3.5.5",
     "chart.js": "^2.8.0",
     "d3": "^5.9.7",
+    "echarts": "^4.2.1",
+    "echarts-for-react": "^2.0.15-beta.0",
     "jquery": "^3.4.1",
     "react": "^16.8.6",
     "react-chartjs-2": "^2.7.6",
@@ -21,10 +23,14 @@
     "time-gantt": "0.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "npm run build-css && run-p -ncr watch-css start-js",
+    "start-js": "react-scripts start",
+    "build": "run-s -n build-css build-js",
+    "build-js": "react-scripts build",
+    "test": "run-s -n build-css test-js",
+    "test-js": "react-scripts test --env=jsdom",
+    "build-css": "node-less-chokidar src",
+    "watch-css": "node-less-chokidar src --watch"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,5 +46,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "node-less-chokidar": "^0.4.1",
+    "npm-run-all": "^4.1.5"
   }
 }

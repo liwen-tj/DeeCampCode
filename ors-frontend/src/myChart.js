@@ -4,6 +4,8 @@ import echarts from 'echarts/lib/echarts';
 
 class Pie extends Component {
     getOption() {
+        while(!localStorage.getItem("statistic"))
+            console.log("wait");
         let dataStyle = {
             normal: {
                 label: {
@@ -153,6 +155,8 @@ class LineChart extends Component {
     componentDidMount() { }
 
     getOption() {
+        while(!localStorage.getItem("statistic"))
+            console.log("wait");
         let data = JSON.parse(localStorage.getItem("statistic"))[0]["extraHourRatio"];
         console.log(data);
         let dataAxis = [];
@@ -183,7 +187,7 @@ class LineChart extends Component {
                         color: '#fff'
                     },
                     interval:0,  
-                    rotate:35
+                    rotate:30
                 },
                 axisTick: {
                     show: false
