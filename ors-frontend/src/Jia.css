@@ -34,10 +34,6 @@
   vertical-align: top;
 }
 
-.OperationItemBody1 {
-  height: 30px;
-  position:relative;
-}
 
 @font-face {
     font-family: 'baoziFont'; /* 自定义的字体名称; */
@@ -127,3 +123,5 @@
   position:sticky;
   top:0;
 }
+
+

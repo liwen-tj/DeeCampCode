@@ -3,6 +3,7 @@ import './Jia.css';
 import { Tooltip, Drawer, Button } from 'antd';
 import { Bar as BarChart, Doughnut } from 'react-chartjs-2';
 import API from "./utils/api";
+import Legend from "./Legend";
 
 const unitPx = 15;
 
@@ -212,8 +213,9 @@ class Jia extends Component {
         console.log(scheds);
         return (
             <div>
+                <Legend />
                 <OperationScheduleTable schedules={scheds} />
-                <Button type="primary" onClick={this.preview} style={{ marginLeft: "95%" }}>预览</Button>
+                <Button type="primary" onClick={this.preview} style={{ marginLeft: "95%" }}>预览排班表</Button>
             </div>
         )
     };
