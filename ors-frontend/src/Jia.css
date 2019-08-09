@@ -34,6 +34,7 @@
   vertical-align: top;
 }
 
+
 @font-face {
     font-family: 'baoziFont'; /* 自定义的字体名称; */
     src: url('./utils/SOURCEHANSANSCN-EXTRALIGHT.OTF') format('truetype');  /* 自定义的字体的存放路径、格式; */
@@ -122,3 +123,5 @@
   position:sticky;
   top:0;
 }
+
+

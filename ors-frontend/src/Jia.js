@@ -3,6 +3,7 @@ import './Jia.css';
 import { Tooltip, Drawer, Button } from 'antd';
 import { Bar as BarChart, Doughnut } from 'react-chartjs-2';
 import API from "./utils/api";
+import Legend from "./Legend";
 
 const unitPx = 15;
 
@@ -57,7 +58,7 @@ class OperationItem extends Component {
 }
 
 function OperationScheduleTable(props) {
-    // console.log(props.schedules);
+    console.log(props.schedules);
     return (<div>
         <div className={"OperationSchedule"}>
             <table style={{ tableLayout: "fixed", width: "200px" }}>
@@ -173,7 +174,7 @@ class Jia extends Component {
 
     genSchedules(data) { // data: values1
         if (data.length == 0) { return [] }
-        // console.log(data);
+
         let orid = data[0]['orId'];
         let index = 0;
         let result = [{ 'roomInfo': 'Room ' + orid, 'operation': [] }];
@@ -209,11 +210,13 @@ class Jia extends Component {
         let myscheduleValue = JSON.parse(this.props.scheduleValue);
         let values1 = myscheduleValue.sort(this.compare("orId", "startTime"));
         let scheds = this.genSchedules(values1);
-        // console.log(scheds);
+
+        console.log(scheds);
         return (
             <div>
+                <Legend />
                 <OperationScheduleTable schedules={scheds} />
-                <Button type="primary" onClick={this.preview} style={{ marginLeft: "95%" }}>预览</Button>
+                <Button type="primary" onClick={this.preview} style={{ marginLeft: "95%" }}>预览排班表</Button>
             </div>
         )
     };
