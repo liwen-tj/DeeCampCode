@@ -48,10 +48,10 @@ def csv2pdf(csv_file):
     pdf_file = csv_file[:-3] + 'pdf'
 
     df = pd.read_csv(csv_file, sep=',', encoding='gbk')
-    print(df.head())
+    # print(df.head())
     df.drop(columns=['key', 'rank'], inplace=True)
     df.index = np.arange(1, len(df) + 1) # 设置从1开始
-    print(df.head())
+    # print(df.head())
 
     df.to_html(html_file, justify='center')
     formatter = ''

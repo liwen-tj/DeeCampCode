@@ -1,4 +1,4 @@
-﻿import React, {Component} from 'react';
+﻿import React, { Component } from 'react';
 import './Jia.css';
 import { Tooltip, Drawer, Button } from 'antd';
 import { Bar as BarChart, Doughnut } from 'react-chartjs-2';
@@ -52,78 +52,78 @@ class OperationItem extends Component {
 }
 
 function OperationScheduleTable(props) {
-        return (<div>
-            <div className={"OperationSchedule"}>
-                <table style={{tableLayout: "fixed", width: "200px"}}>
-                    {/*-------------------横轴------------------*/}
-                    <thead className={"stickyRow"}>
-                        <tr className={"stickyRow"}>
-                            <th className={"stickyRow bedInfo scheduleHeader"} style={{zIndex: 4}}>{null}</th>
-                            {[...Array(64).keys()].map(x => {
-                                return <th className={"stickyRow scheduleHeader quarterCell"} key={x}>
-                                    <div style={{width: "100%", height: "100%", position: "relative"}}>
-                                        <p className={"timeTag"}>
-                                            {!(x % 2) ? (("0" + (Math.floor(x / 4) + 8)).slice(-2) + ":" + (!(x % 4) ? "00" : "30")) : null}
-                                        </p>
-                                        {!(x % 4) ? <div className={"timePoint"}>{null}</div> : null}
-                                    </div>
-                                </th>
-                            })}
-                        </tr>
-                    </thead>
-                    {/*-------------------横轴------------------*/}
-                    <tbody>
-                        {props.schedules.map((bedSchedule, bedIdx) => {
-                            return ([
-                                <tr key={"space" + bedIdx} className={"stickyRow"}>
-                                    <td className={"bedInfo spaceRow"}>{null}</td>
-                                    {[...Array(64).keys()].map(y => {
-                                        return <td className={"quarterCell spaceRow"} key={y}>{null}</td>
-                                    })}
-                                </tr>,
-                                <tr key={"data" + bedIdx} className={"stickyRow"}>
-                                    {/*-------纵轴-------*/}
-                                    <td className={"bedInfo"}>{bedSchedule.roomInfo}</td>
-                                    {/*-------纵轴-------*/}
-                                    <td className={"quarterCell dataRow"}>
-                                        <div className={"BedScheduleTd"}>
-                                            {
-                                                bedSchedule.operation.map((x, y) => {
-                                                    return <OperationItem key={y}
-                                                                          patientName={x.patientName}
-                                                                          beginIndex={x.beginIndex}
-                                                                          operationDuration={x.operationDuration}
-                                                                          secondInfo={x.secondInfo}
-                                                                          thirdInfo={x.thirdInfo}
-                                                                          recoverDuration={x.recoverDuration}
-                                                                          cleanDuration={x.recoverDuration} />
-                                                })
-                                            }
-                                        </div>
-                                    </td>
-                                    {[...Array(63).keys()].map(y => {
-                                        return <td className={"quarterCell dataRow"} key={y}>{null}</td>
-                                    })}
-                                </tr>
-                            ])
+    return (<div>
+        <div className={"OperationSchedule"}>
+            <table style={{ tableLayout: "fixed", width: "200px" }}>
+                {/*-------------------横轴------------------*/}
+                <thead className={"stickyRow"}>
+                    <tr className={"stickyRow"}>
+                        <th className={"stickyRow bedInfo scheduleHeader"} style={{ zIndex: 4 }}>{null}</th>
+                        {[...Array(64).keys()].map(x => {
+                            return <th className={"stickyRow scheduleHeader quarterCell"} key={x}>
+                                <div style={{ width: "100%", height: "100%", position: "relative" }}>
+                                    <p className={"timeTag"}>
+                                        {!(x % 2) ? (("0" + (Math.floor(x / 4) + 8)).slice(-2) + ":" + (!(x % 4) ? "00" : "30")) : null}
+                                    </p>
+                                    {!(x % 4) ? <div className={"timePoint"}>{null}</div> : null}
+                                </div>
+                            </th>
                         })}
-                        <tr className={"stickyRow"}>
-                            <td className={"bedInfo"}>{null}</td>
-                            {[...Array(64).keys()].map(y => {
-                                return <td className={"quarterCell spaceRow"} key={y}>{null}</td>
-                            })}
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>)
+                    </tr>
+                </thead>
+                {/*-------------------横轴------------------*/}
+                <tbody>
+                    {props.schedules.map((bedSchedule, bedIdx) => {
+                        return ([
+                            <tr key={"space" + bedIdx} className={"stickyRow"}>
+                                <td className={"bedInfo spaceRow"}>{null}</td>
+                                {[...Array(64).keys()].map(y => {
+                                    return <td className={"quarterCell spaceRow"} key={y}>{null}</td>
+                                })}
+                            </tr>,
+                            <tr key={"data" + bedIdx} className={"stickyRow"}>
+                                {/*-------纵轴-------*/}
+                                <td className={"bedInfo"}>{bedSchedule.roomInfo}</td>
+                                {/*-------纵轴-------*/}
+                                <td className={"quarterCell dataRow"}>
+                                    <div className={"BedScheduleTd"}>
+                                        {
+                                            bedSchedule.operation.map((x, y) => {
+                                                return <OperationItem key={y}
+                                                    patientName={x.patientName}
+                                                    beginIndex={x.beginIndex}
+                                                    operationDuration={x.operationDuration}
+                                                    secondInfo={x.secondInfo}
+                                                    thirdInfo={x.thirdInfo}
+                                                    recoverDuration={x.recoverDuration}
+                                                    cleanDuration={x.recoverDuration} />
+                                            })
+                                        }
+                                    </div>
+                                </td>
+                                {[...Array(63).keys()].map(y => {
+                                    return <td className={"quarterCell dataRow"} key={y}>{null}</td>
+                                })}
+                            </tr>
+                        ])
+                    })}
+                    <tr className={"stickyRow"}>
+                        <td className={"bedInfo"}>{null}</td>
+                        {[...Array(64).keys()].map(y => {
+                            return <td className={"quarterCell spaceRow"} key={y}>{null}</td>
+                        })}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>)
 }
 
 class Jia extends Component {
     constructor(props) {
         super(props);
     };
-    
+
     preview = () => { // 预览
         let myscheduleValue = JSON.parse(this.props.scheduleValue);
         let values1 = myscheduleValue.sort(this.compare("orId", "startTime"));
@@ -200,7 +200,7 @@ class Jia extends Component {
         return result;
     }
 
-    render(){
+    render() {
         let values = [ // 数据从localStorage中取出来
             {
                 "key": 3, // 表格编号
@@ -276,7 +276,7 @@ class Jia extends Component {
         return (
             <div>
                 <OperationScheduleTable schedules={scheds} />
-                <Button type="primary" onClick={this.preview} style={{marginLeft:"95%"}}>预览</Button>
+                <Button type="primary" onClick={this.preview} style={{ marginLeft: "95%" }}>预览</Button>
             </div>
         )
     };
