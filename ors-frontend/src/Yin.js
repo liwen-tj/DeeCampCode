@@ -21,6 +21,7 @@ class Yin extends React.Component {
         this.state = {
             activeKey: '1',
             scheduleValue: '[]',
+            chartData: '[]'
         };
     };
 
@@ -59,6 +60,7 @@ class Yin extends React.Component {
             // console.log(data);
             that.setState({
                 scheduleValue: tablevalue,
+                chartData: JSON.stringify(json.slice(length - 1, length))
             });
             console.log("schedule done.")
             localStorage.setItem("schedule_output", tablevalue);
@@ -93,10 +95,10 @@ class Yin extends React.Component {
                     <TabPane tab="手术室调度排班表" key="2">
                         <Jia scheduleValue={this.state.scheduleValue}/>
                         <div style={{ width: "30%", display: "inline-block", marginLeft: "12%" }}>
-                            <LineChart />
+                            <LineChart chartData = {this.state.chartData}/>
                         </div>
                         <div style={{ marginLeft: "-12%", width: "55%", display: "inline-block" }}>
-                            <Pie />
+                            <Pie chartData = {this.state.chartData}/>
                         </div>
                     </TabPane>
                 </Tabs>
