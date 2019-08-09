@@ -1,12 +1,12 @@
 import Jia from './Jia';
 import React from 'react';
 import EditableTable from './Csv2Table';
-import logo from './logo.svg';
 import './Yin.css';
 import { Tabs, notification, Button } from 'antd';
 import API from './utils/api.js';
 import Headers from './utils/headers.js';
 import { LineChart, Pie } from './myChart';
+import bar from './img/bar.jpeg';
 
 const { TabPane } = Tabs;
 
@@ -77,8 +77,8 @@ class Yin extends React.Component {
     render() {
         return (
             <div style={{ "backgroundColor": '#202743'}}>
-                <div className='frontDIV'>
-                    <img src={logo} className='Yinlogo' />
+                <div>
+                    <img src={bar} className='Yinlogo' />
                 </div>
                 <Tabs activeKey={this.state.activeKey} onChange={this.change} tabBarStyle={{color:'white'}}>
                     <TabPane style={{background:"#ffffff"}} tab="患者总览" key="1">
@@ -86,7 +86,7 @@ class Yin extends React.Component {
                             <EditableTable pagination={{ pageSize: 10 }} scroll={{ y: 240 }} />
                         </div>
                         <div>
-                            <Button onClick={this.handleClick} type="primary" style={{ marginBottom: 16 }} className="submit"> 提交 </Button>
+                            <Button onClick={this.handleClick} type="primary" style={{ marginBottom: 16 }} className="submit"> 开始调度 </Button>
                         </div>
                     </TabPane>
                     <TabPane tab="手术室调度排班表" key="2">
