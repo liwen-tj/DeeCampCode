@@ -5,6 +5,7 @@ import { Bar as BarChart, Doughnut } from 'react-chartjs-2';
 import API from "./utils/api";
 import Legend from "./Legend";
 import { PredictChart } from './myChart';
+import * as moment from "moment";
 
 const unitPx = 15;
 
@@ -60,7 +61,12 @@ class OperationItem extends Component {
 }
 
 function OperationScheduleTable(props) {
-    console.log(props.schedules);
+    let startTime = props.envSetting.startTime;
+    let endTime = props.envSetting.endTime;
+    let workTimeRange = (moment(endTime) - moment(startTime)) / 60000 / unitPx;
+
+    console.log('OperationScheduleTable', workTimeRange);
+    let timeQuantum = 24 * 60 / unitPx;
     return (<div>
         <div className={"OperationSchedule"}>
             <table style={{ tableLayout: "fixed", width: "200px" }}>
@@ -68,13 +74,15 @@ function OperationScheduleTable(props) {
                 <thead className={"stickyRow"}>
                     <tr className={"stickyRow"}>
                         <th className={"stickyRow bedInfo scheduleHeader"} style={{ zIndex: 4 }}>{null}</th>
-                        {[...Array(64).keys()].map(x => {
-                            return <th className={"stickyRow scheduleHeader quarterCell"} key={x}>
+                        {[...Array(timeQuantum).keys()].map(x => {
+                            let timePoint = moment(startTime).add(unitPx * x, 'm').format('HH:mm');
+                            return <th key={x}
+                                className={"stickyRow scheduleHeader quarterCell" + (workTimeRange === x ? " endTimeCell" : "")}>
                                 <div style={{ width: "100%", height: "100%", position: "relative" }}>
                                     <p className={"timeTag"}>
-                                        {!(x % 2) ? (("0" + (Math.floor(x / 4) + 8)).slice(-2) + ":" + (!(x % 4) ? "00" : "30")) : null}
+                                        {timePoint.match(/[30]0$/) ? timePoint : null}
                                     </p>
-                                    {!(x % 4) ? <div className={"timePoint"}>{null}</div> : null}
+                                    {timePoint.endsWith('00') ? <div className={"timePoint"}>{null}</div> : null}
                                 </div>
                             </th>
                         })}
@@ -86,8 +94,8 @@ function OperationScheduleTable(props) {
                         return ([
                             <tr key={"space" + bedIdx} className={"stickyRow"}>
                                 <td className={"bedInfo spaceRow"}>{null}</td>
-                                {[...Array(64).keys()].map(y => {
-                                    return <td className={"quarterCell spaceRow"} key={y}>{null}</td>
+                                {[...Array(timeQuantum).keys()].map(y => {
+                                    return <td className={"quarterCell spaceRow" + (workTimeRange === y ? " endTimeCell" : "")} key={y}>{null}</td>
                                 })}
                             </tr>,
                             <tr key={"data" + bedIdx} className={"stickyRow"}>
@@ -110,7 +118,7 @@ function OperationScheduleTable(props) {
                                         }
                                     </div>
                                 </td>
-                                {[...Array(63).keys()].map(y => {
+                                {[...Array(timeQuantum - 1).keys()].map(y => {
                                     return <td className={"quarterCell dataRow"} key={y}>{null}</td>
                                 })}
                             </tr>
@@ -118,8 +126,8 @@ function OperationScheduleTable(props) {
                     })}
                     <tr className={"stickyRow"}>
                         <td className={"bedInfo"}>{null}</td>
-                        {[...Array(64).keys()].map(y => {
-                            return <td className={"quarterCell spaceRow"} key={y}>{null}</td>
+                        {[...Array(timeQuantum).keys()].map(y => {
+                            return <td className={"quarterCell spaceRow" + (workTimeRange === y ? " endTimeCell" : "")} key={y}>{null}</td>
                         })}
                     </tr>
                 </tbody>
@@ -217,7 +225,7 @@ class Jia extends Component {
         return (
             <div>
                 <Legend />
-                <OperationScheduleTable schedules={scheds} />
+                <OperationScheduleTable schedules={scheds} envSetting={this.props.envSetting}/>
                 <Button type="primary" onClick={this.preview} style={{ marginLeft: "90%" }} className="previewButton">预览排班表</Button>
             </div>
         )

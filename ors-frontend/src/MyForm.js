@@ -61,13 +61,13 @@ class Myform extends React.Component {
                 <Form.Item labelCol={{ span: 10 }} wrapperCol={{ span: 10, offset: -1 }} label="上班时间">
                     {getFieldDecorator('start_time', {
                         rules: [{ required: true, message: '请输入上班时间！' }],
-                    })(<TimePicker defaultOpenValue={moment("08:00", "HH:mm")} format={format} />)}
+                    })(<TimePicker defaultOpenValue={moment("08:00", "HH:mm")} format={format} minuteStep={30}/>)}
                 </Form.Item>
 
                 <Form.Item labelCol={{ span: 10 }} wrapperCol={{ span: 10, offset: -1 }} label="下班时间">
                     {getFieldDecorator('end_time', {
                         rules: [{ required: true, message: '请输入下班时间！' }],
-                    })(<TimePicker defaultOpenValue={moment("16:00", "HH:mm")} format={format} />)}
+                    })(<TimePicker defaultOpenValue={moment("16:00", "HH:mm")} format={format} minuteStep={30}/>)}
                 </Form.Item>
 
                 <Form.Item labelCol={{ span: 12 }} wrapperCol={{ span: 10, offset: -1 }} label="手术室数量">
