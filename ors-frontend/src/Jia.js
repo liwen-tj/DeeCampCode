@@ -218,7 +218,7 @@ class Jia extends Component {
             <div>
                 <Legend />
                 <OperationScheduleTable schedules={scheds} />
-                <Button type="primary" onClick={this.preview} style={{ marginLeft: "95%" }}>预览排班表</Button>
+                <Button type="primary" onClick={this.preview} style={{ marginLeft: "90%" }} className="previewButton">预览排班表</Button>
             </div>
         )
     };

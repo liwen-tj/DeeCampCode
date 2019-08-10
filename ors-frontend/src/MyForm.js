@@ -57,7 +57,7 @@ class Myform extends React.Component {
         };
 
         return (
-            <Form onSubmit={this.handleSubmit} >
+            <Form onSubmit={this.handleSubmit}>
                 <Form.Item labelCol={{ span: 10 }} wrapperCol={{ span: 10, offset: -1 }} label="上班时间">
                     {getFieldDecorator('start_time', {
                         rules: [{ required: true, message: '请输入上班时间！' }],
@@ -97,7 +97,7 @@ class Myform extends React.Component {
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ span: 22, offset: 10 }}>
-                    <Button type="primary" size="large" htmlType="submit">完成</Button>
+                    <Button type="primary" size="large" htmlType="submit" style={{border:0}}>完成</Button>
                 </Form.Item>
 
             </Form>

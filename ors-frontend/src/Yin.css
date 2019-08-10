@@ -28,3 +28,6 @@
     position: relative;
     width: 30%;
 }
+.submit {
+    border: 0px !important;
+}

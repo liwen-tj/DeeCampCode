@@ -156,5 +156,12 @@
   position:sticky;
   top:0;
 }
+.ant-tag-has-color{
+  color:#171E43 !important;
+}
+.previewButton{
+  border: 0px;
+}
+
 
 

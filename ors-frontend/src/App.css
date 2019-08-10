@@ -31,6 +31,8 @@
 
 
 .button1 {
+  background: linear-gradient(to right, #A871EA, #EA83BF) !important;
+  border: 0px !important;
   margin-left: 80%;
   border-radius: 8px;
   width: 250px;
@@ -38,6 +40,7 @@
 
 .button2 {
   margin-left: 20%;
+  border: 0px !important;
   width: 250px;
 }
 @keyframes App-logo-spin {
@@ -47,4 +50,14 @@
   to {
     transform: rotate(360deg);
   }
+}
+.ant-drawer-wrapper-body{
+  overflow: hidden !important;
+}
+.myDrawer div.ant-drawer-content{
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+.myDrawer div.ant-drawer-header{
+  background: rgba(255, 255, 255, 0.6) !important;
+  height:11%;
 }
