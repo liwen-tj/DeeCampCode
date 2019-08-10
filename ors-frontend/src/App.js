@@ -63,7 +63,7 @@ class App extends React.Component {
           <Button className="button2" type="primary" size="large" onClick={this.showDrawer}>
             构建调度表
               </Button>
-          <Drawer
+          <Drawer width="20%"
             title="配置信息"
             placement="right"
             closable={true}

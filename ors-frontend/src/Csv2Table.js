@@ -310,17 +310,17 @@ class EditableTable extends React.Component {
             <div>
                 <div>
                     <p className="wordFont"><Icon type="solution" />&nbsp;&nbsp;患者信息表（可修改预测手术时长，手术室号，开始时间）</p>
-                </div>
-
-                <Table
-                    components={components}
-                    rowClassName={() => 'editable-row'}
-                    bordered
-                    dataSource={dataSource}
-                    columns={columns}
-                />
-
             </div>
+
+            <Table
+                components={components}
+                rowClassName={() => 'editable-row'}
+                bordered
+                dataSource={dataSource}
+                columns={columns}
+            />
+
+            </div >
 
         );
     }

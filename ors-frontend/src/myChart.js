@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import echarts from 'echarts/lib/echarts';
+import { transformDirection } from 'echarts/lib/util/graphic';
 
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
@@ -162,9 +163,9 @@ class Pie extends Component {
 }
 
 class LineChart extends Component {
-        // while (!localStorage.getItem("statistic"))
-        //     console.log("wait");
-    constructor(props){
+    // while (!localStorage.getItem("statistic"))
+    //     console.log("wait");
+    constructor(props) {
         super(props)
     }
 
@@ -266,6 +267,112 @@ class LineChart extends Component {
     }
 }
 
+class LineChart2 extends Component {
+    // while (!localStorage.getItem("statistic"))
+    //     console.log("wait");
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        console.log(this.props.chartData);
+        let data = [0];
+        if (JSON.parse(this.props.chartData).length != 0)
+            data = JSON.parse(this.props.chartData)[0]["extraHours"];
+        // console.log(data);
+        let dataAxis = [];
+        let yMax = 1;
+        let dataShadow = [];
+
+        for (let i = 0; i < data.length; i++) {
+            dataShadow.push(yMax);
+            dataAxis.push(String(i + 1) + "号");
+        }
+        let option = {
+            title: {
+                text: '各手术室利用率',
+                textStyle: {
+                    color: '#fff'
+                }
+            },
+            grid: { // 控制图的大小，调整下面这些值就可以，
+                x: 100,
+                // x2: 40,
+                y2: 80// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+            },
+            xAxis: {
+                data: dataAxis,
+                axisLabel: {
+                    inside: false,
+                    textStyle: {
+                        color: '#fff'
+                    },
+                    interval: 0,
+                    rotate: 30
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                z: 10
+            },
+            yAxis: {
+                splitLine: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#fff'
+                    }
+                }
+            },
+            dataZoom: [
+                {
+                    type: 'inside'
+                }
+            ],
+            series: [
+                {
+                    type: 'bar',
+                    barWidth: 10,
+                    barCategoryGap: 5,
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: 5,
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    { offset: 0, color: '#a871ea' },
+                                    { offset: 1, color: '#ea38bf' }
+                                ]
+                            )
+                        },
+                    },
+                    data: data
+                }
+            ]
+        }
+        return (
+            <div>
+                <ReactEcharts
+                    option={option}
+                    notMerge={true}
+                    lazyUpdate={true}
+                />
+            </div>
+        )
+    }
+}
+
+
 class PredictChart extends Component {
 
     componentDidMount() { }
@@ -283,9 +390,9 @@ class PredictChart extends Component {
             }
         }
         return {
-            title: {
-                text: '交错正负轴标签'
-            },
+            // title: {
+            //     text: '交错正负轴标签'
+            // },
             tooltip: {
                 trigger: 'axis',
                 axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -304,6 +411,10 @@ class PredictChart extends Component {
                         type: 'dashed'
                     }
                 },
+                axisLabel: {
+                    interval: 0,
+                    rotate: 30
+                }
             },
             yAxis: {
                 type: 'category',
@@ -311,7 +422,7 @@ class PredictChart extends Component {
                     show: false
                 },
                 axisLabel: {
-                    show: false
+                    show: false,
                 },
                 axisTick: {
                     show: false
@@ -319,11 +430,25 @@ class PredictChart extends Component {
                 splitLine: {
                     show: false
                 },
-                data: ['ten', 'nine', 'eight', 'seven', 'six', 'five', 'four', 'three', 'two', 'one']
+                data: ['six', 'five', 'four', 'three', 'two', 'one']
             },
             series: [{
                 name: '生活费',
                 type: 'bar',
+                barWidth: 10,
+                barCategoryGap: 5,
+                itemStyle: {
+                    normal: {
+                        barBorderRadius: 5,
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                { offset: 0, color: '#a871ea' },
+                                { offset: 1, color: '#ea38bf' }
+                            ]
+                        )
+                    },
+                },
                 stack: '总量',
                 label: {
                     normal: {
@@ -339,22 +464,23 @@ class PredictChart extends Component {
                     value: -0.09,
                     label: labelRight
                 },
-                    0.2, 0.44,
+                {
+                    value: 0.2,
+                    label: labelLeft
+                },
+
+                {
+                    value: 0.44,
+                    label: labelLeft
+                },
                 {
                     value: -0.23,
                     label: labelRight
                 },
-                    0.08,
                 {
-                    value: -0.17,
-                    label: labelRight
+                    value: 0.8,
+                    label: labelLeft
                 },
-                    0.47,
-                {
-                    value: -0.36,
-                    label: labelRight
-                },
-                    0.18
                 ]
             }]
         }
@@ -374,4 +500,4 @@ class PredictChart extends Component {
     }
 }
 
-export { PredictChart, LineChart, Pie };
+export { PredictChart, LineChart, Pie, LineChart2 };

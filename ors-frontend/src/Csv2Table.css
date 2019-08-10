@@ -1,5 +1,25 @@
 @import '../node_modules/antd/dist/antd.css';
 
+.ant-table-bordered .ant-table-tbody > tr > td {
+    border-right: 1px solid #aaaaaaba;
+}
+
+.ant-table-tbody > tr > td {
+    border-bottom: 1px solid #aaaaaaba;
+}
+
+.ant-table-thead > tr > th {
+    background:  #508eee !important;
+    color: aliceblue
+}
+
+.ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+    color: black
+}
+.ant-table {
+    color: azure !important;
+}
+
 .editable-cell {
     position: relative;
 }
@@ -14,20 +34,23 @@
     border-radius: 4px;
     padding: 4px 11px;
 }
+
 .submit {
     float:right;
     margin-right: 1%;
 }
+
 .wordFont {
     float: right;
     font-weight:bold;
     font-size: 15px;
     margin-left: 1%;
     font-family:"baoziFont1";
-    color: black;
+    color: #d9d9d9;
     letter-spacing: 2px;
     margin-top: 10px;
 }
+
 @font-face {
     font-family: 'baoziFont1'; /* 自定义的字体名称; */
     src: url('./utils/SOURCEHANSANSCN-EXTRALIGHT.OTF') format('truetype');  /* 自定义的字体的存放路径、格式; */

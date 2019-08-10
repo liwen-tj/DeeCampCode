@@ -4,6 +4,7 @@ import { Tooltip, Drawer, Button } from 'antd';
 import { Bar as BarChart, Doughnut } from 'react-chartjs-2';
 import API from "./utils/api";
 import Legend from "./Legend";
+import { PredictChart } from './myChart';
 
 const unitPx = 15;
 
@@ -52,6 +53,7 @@ class OperationItem extends Component {
                 visible={this.state.visible}
             >
                 <p>{this.props.thirdInfo}</p>
+                <PredictChart />
             </Drawer>
         </div>);
     }
