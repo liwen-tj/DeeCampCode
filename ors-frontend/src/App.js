@@ -56,11 +56,11 @@ class App extends React.Component {
         <img src={name} alt="name" style={{width:"100%"}}/>
         <div className="head">
           <Upload {...props}>
-            <Button className="button1" type="primary" size="large">
+            <Button className="button1 GradientButton" type="primary" size="large">
               <Icon type="upload" /> 上传历史患者信息表
               </Button>
           </Upload>
-          <Button className="button2" type="primary" size="large" onClick={this.showDrawer}>
+          <Button className="button2 GradientButton" type="primary" size="large" onClick={this.showDrawer}>
             构建调度表
               </Button>
           <Drawer width="20%"

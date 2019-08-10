@@ -84,12 +84,13 @@ class Yin extends React.Component {
                     <img src={bar} className='Yinlogo' />
                 </div>
                 <Tabs activeKey={this.state.activeKey} onChange={this.change} tabBarStyle={{color:'white'}}>
-                    <TabPane style={{background:"#202743"}} tab="患者总览" key="1">
+                    <TabPane tab="患者总览" key="1">
+//                     <TabPane style={{background:"#202743"}} tab="患者总览" key="1">
                         <div id={"editableTable"} className='predictOutput'>
                             <EditableTable pagination={{ pageSize: 10 }} scroll={{ y: 240 }} />
                         </div>
                         <div>
-                            <Button onClick={this.handleClick} type="primary" style={{ marginBottom: 16 }} className="submit"> 开始调度 </Button>
+                            <Button onClick={this.handleClick} type="primary" style={{ marginBottom: 16 }} className="submit GradientButton"> 开始调度 </Button>
                         </div>
                     </TabPane>
                     <TabPane tab="手术室调度排班表" key="2">
