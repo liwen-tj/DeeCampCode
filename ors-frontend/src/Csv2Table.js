@@ -133,8 +133,8 @@ class EditableTable extends React.Component {
                     onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
                     style={{ width: 188, marginBottom: 8, display: 'block' }}
                 />
-                <Button className={"GradientButton"}
-                        type="primary"
+                <Button
+                    type="primary"
                     onClick={() => this.handleSearch(selectedKeys, confirm)}
                     icon="search"
                     size="small"
@@ -142,10 +142,7 @@ class EditableTable extends React.Component {
                 >
                     Search
                 </Button>
-                <Button className={"GradientButton"}
-                        onClick={() => this.handleReset(clearFilters)}
-                        size="small"
-                        style={{ width: 90 }}>
+                <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
                     Reset
                 </Button>
             </div>
@@ -315,22 +312,13 @@ class EditableTable extends React.Component {
                     <p className="wordFont"><Icon type="solution" />&nbsp;&nbsp;患者信息表（可修改预测手术时长，手术室号，开始时间）</p>
             </div>
 
-              <Table
-                  className={"EditableTable"}
-                  components={components}
-                  rowClassName={() => 'editable-row'}
-                  bordered
-                  dataSource={dataSource}
-                  columns={columns}
-              />
-
-//             <Table
-//                 components={components}
-//                 rowClassName={() => 'editable-row'}
-//                 bordered
-//                 dataSource={dataSource}
-//                 columns={columns}
-//             />
+            <Table
+                components={components}
+                rowClassName={() => 'editable-row'}
+                bordered
+                dataSource={dataSource}
+                columns={columns}
+            />
 
             </div >
 
