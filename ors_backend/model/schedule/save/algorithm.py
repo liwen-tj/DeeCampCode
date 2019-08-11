@@ -190,14 +190,20 @@ class Algorithm(ea.Algorithm):
             population = studPop + tempPop
             id_1 = np.vstack((best_id, id_temp))
             # 进行进化操作
-
-            population.Chrom = ea.recombin(self.recFunc, population.Chrom, self.pc)                  # 重组
-            population.Chrom, id_1 = self.problem.intersect(population.Chrom, id_1, self.pc)         # 重组
-
-            population.Phen = population.decoding()                                  # 染色体解码
-            population.ObjV, population.CV = self.problem.aim_chuli(population.Phen, id_1, new_fixed_dict)                   # 计算种群的目标函数值
-            self.evalsNum += population.sizes                                        # 更新评价次数
-            population.FitnV = ea.scaling(self.problem.maxormins * population.ObjV, population.CV)           # 计算适应度
+            # population.Chrom = ea.recombin(self.recFunc, population.Chrom, self.pc)                  # 重组
+            population.Chrom, id_1 = self.problem.intersect(population.Chrom, id_1, self.pc)  # 重组
+            population.Chrom = ea.mutate(self.mutFunc, population.Encoding, population.Chrom, population.Field, self.pm)
+            # 求进化后个体的目标函数值//变异
+            # print('进化中的Chorm矩阵：', population.Chrom)
+            # print('进化中的Phen矩阵：', population.Phen)
+            population.Phen = population.decoding()  # 染色体解码
+            # population.ObjV, population.CV = self.problem.aimFuc(population.Phen, population.CV)
+            population.ObjV, population.CV = self.problem.aim_chuli(population.Phen, id_1, new_fixed_dict)  # 计算种群的目标函数值
+            # population.ObjV, population.CV = self.problem.aim_chuli(population.Chrom, id_1)
+            self.evalsNum += population.sizes
+            population.FitnV = ea.scaling(self.problem.maxormins * population.ObjV, population.CV)  # 计算适应度
+        # 处理进化记录器
+        # 计算适应度
         # 处理进化记录器
         delIdx = np.where(np.isnan(self.obj_trace))[0]
         self.obj_trace = np.delete(self.obj_trace, delIdx, 0)

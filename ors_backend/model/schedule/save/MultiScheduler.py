@@ -175,9 +175,8 @@ def Scheduler(input_json, input_config):
         del dict_for_result[k]
 
     length_sum = len(temple_for_startime)                                       # 绑定了时间的人数
-
     Encoding = 'RI'                                          # 编码方式为实数                                           # 染色体解码后得到的变量是离散的
-    NIND = 40                                              # 种群规模
+    NIND = 50                                              # 种群规模
 
     problem = MyProblem(num - length_sum, n_x, n_y, NIND, list_of_all_1, morning_time, afternoon_time, dict_for_xunhuan)
     # n_o为手术室数量，n_r为复苏室数量, chrom为染色体[1,3,2]表示第一台
@@ -231,6 +230,7 @@ def Scheduler(input_json, input_config):
     data['cleanDuration'] = list_clean_1        # 手术室内的清洁时间
     data['startTime'] = list_start_1  # 手术室每一台手术的开始时间
     data['orId'] = index_or_1      # 手术室内的手术的编码
+    data['predTime'] = list_operation
 #存入csv
 #json输出内容
     orRatio = str((o_total_time.sum()-o_total_r_time.sum()-list_clean_1.sum())/(o_total_time.sum()+o_total_empty_time.sum()))
@@ -265,6 +265,7 @@ def Scheduler(input_json, input_config):
     "overtimeRatio": overtimeRatio
     }
 
+    
     return output_json, output_overall
 
 if __name__ == '__main__':
@@ -282,3 +283,4 @@ if __name__ == '__main__':
     t2 = time.time()
     print('output_json:', output_json)
     print('out_overall', output_overall)
+    print('所用时间', t2-t1)

@@ -76,11 +76,14 @@ class Yin extends React.Component {
         this.setState({ activeKey: key });
     }
 
+    logoClick = () => {
+        window.location.href = 'http://localhost:3000';
+    }
     render() {
         return (
             <div style={{ "backgroundColor": '#202743'}}>
                 <div>
-                    <img src={bar} className='Yinlogo' />
+                    <img onClick={this.logoClick} src={bar} className='Yinlogo' />
                 </div>
                 <Tabs activeKey={this.state.activeKey} onChange={this.change} tabBarStyle={{color:'white'}}>
                     <TabPane style={{background:"#202743"}} tab="患者总览" key="1">

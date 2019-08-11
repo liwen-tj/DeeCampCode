@@ -1,0 +1,7 @@
+    input_config = {
+        "recover_min": 60,  # 最小恢复时间
+        "end_time": "16:00",  # 下班时间
+        "operRoom": 8,  # 手术室数目
+        "recover": 4,  # 恢复室数目
+        "start_time": "08:00"  # 上班时间
+    }
