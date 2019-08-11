@@ -63,12 +63,14 @@ class App extends React.Component {
           <Button className="button2 GradientButton" type="primary" size="large" onClick={this.showDrawer}>
             构建调度表
               </Button>
-          <Drawer width="20%"
+          <Drawer
+            width="20%"
             title="配置信息"
             placement="right"
             closable={true}
             onClose={this.onClose}
             visible={this.state.visible}
+            className="myDrawer"
           >
             <MyForm />
           </Drawer>

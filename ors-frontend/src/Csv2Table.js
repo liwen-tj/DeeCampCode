@@ -189,6 +189,7 @@ class EditableTable extends React.Component {
                 width: '7%',
                 //editable: true,
                 ...this.getColumnSearchProps('id'),
+
             },
             {
                 title: '姓名',
@@ -249,6 +250,7 @@ class EditableTable extends React.Component {
                 width: '10%',
                 editable: true,
                 defaultSortOrder: 'descend',
+                className:"predTime",
                 sorter: (a, b) => a.predTime - b.predTime,
             },
             {
@@ -256,12 +258,14 @@ class EditableTable extends React.Component {
                 dataIndex: 'orId',
                 width: '5%',
                 editable: true,
+                className:"orId",
             },
             {
                 title: '开始时间',
                 dataIndex: 'startTime',
                 width: '10%',
                 editable: true,
+                className:"startTime",
             },
         ];
 

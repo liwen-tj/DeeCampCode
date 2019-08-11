@@ -231,7 +231,6 @@ def Scheduler(input_json, input_config):
     data['cleanDuration'] = list_clean_1        # 手术室内的清洁时间
     data['startTime'] = list_start_1  # 手术室每一台手术的开始时间
     data['orId'] = index_or_1      # 手术室内的手术的编码
-    data['predTime'] = list_operation
 #存入csv
 #json输出内容
     orRatio = str((o_total_time.sum()-o_total_r_time.sum()-list_clean_1.sum())/(o_total_time.sum()+o_total_empty_time.sum()))
