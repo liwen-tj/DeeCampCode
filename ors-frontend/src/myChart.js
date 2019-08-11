@@ -170,7 +170,7 @@ class LineChart extends Component {
     }
 
     render() {
-        console.log(this.props.chartData);
+        console.log(JSON.parse(this.props.chartData)[0]);
         let data = [0];
         if (JSON.parse(this.props.chartData).length != 0)
             data = JSON.parse(this.props.chartData)[0]["extraHours"];
@@ -275,10 +275,9 @@ class LineChart2 extends Component {
     }
 
     render() {
-        console.log(this.props.chartData);
         let data = [0];
         if (JSON.parse(this.props.chartData).length != 0)
-            data = JSON.parse(this.props.chartData)[0]["extraHours"];
+            data = JSON.parse(this.props.chartData)[0]["everyorRatio"];
         // console.log(data);
         let dataAxis = [];
         let yMax = 1;

@@ -50,11 +50,17 @@ def table():
     input_config = input_overall[-1]
 
     input_config['start_time'] = input_config['start_time'][11:16]
+    input_config['start_time'] = list(input_config['start_time'])
+    input_config['start_time'][1] = str(int(input_config['start_time'][1]) + 8)
+    input_config['start_time'] = ''.join(input_config['start_time'])
     input_config['end_time'] = input_config['end_time'][11:16]
+    input_config['end_time'] = list(input_config['end_time'])
+    input_config['end_time'][1] = str(int(input_config['end_time'][1]) + 8)
+    input_config['end_time'] = ''.join(input_config['end_time'])
     # print(input_config)
 
     output_json, output_overall = Scheduler(input_json, input_config)
-    # print(output_overall)
+    print(output_json)
     # print(output_json, output_overall)
     output_json = json.loads(output_json)
     output_json.append(output_overall)
