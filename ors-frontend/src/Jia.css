@@ -4,7 +4,9 @@
     width: 10px;  /*滚动条宽度*/
     height: 20px  /*滚动条高度*/
 }  
-  
+.display-linebreak {
+  white-space: pre;
+}
 /*定义滚动条轨道 内阴影+圆角*/  
 ::-webkit-scrollbar-track  
 {  

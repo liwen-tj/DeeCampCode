@@ -53,7 +53,7 @@ class OperationItem extends Component {
                 onClose={this.onClose}
                 visible={this.state.visible}
             >
-                <p>{this.props.thirdInfo}</p>
+                <div className="display-linebreak">{this.props.thirdInfo}</div>
                 <PredictChart />
             </Drawer>
         </div>);
@@ -63,6 +63,11 @@ class OperationItem extends Component {
 function OperationScheduleTable(props) {
     let startTime = props.envSetting.startTime;
     let endTime = props.envSetting.endTime;
+    // let startTime = moment(props.envSetting.startTime).format('HH:mm');
+    // let endTime = moment(props.envSetting.endTime).format('HH:mm');
+    // console.log(startTime);
+    // console.log(endTime);
+
     let workTimeRange = (moment(endTime) - moment(startTime)) / 60000 / unitPx;
 
     console.log('OperationScheduleTable', workTimeRange);
@@ -188,14 +193,18 @@ class Jia extends Component {
         let orid = data[0]['orId'];
         let index = 0;
         let result = [{ 'roomInfo': 'Room ' + orid, 'operation': [] }];
+        let startTime = moment(this.props.envSetting.startTime).format('HH:mm');
+        let startTimeArray = startTime.split(":");
+        let startTimeMinutes = parseInt(startTimeArray[0]) * 60 + parseInt(startTimeArray[1]);
+        console.log(startTimeMinutes);
         for (var dataindex in data) {
             let x = data[dataindex];
             let tmp = {};
             tmp['patientName'] = x['name'] + " " + x['startTime'];
             tmp['secondInfo'] = x['name'] + " " + x['startTime'] + " " + x['predTime'] + "分钟 " + x['operatingName'];
-            tmp['thirdInfo'] = "就诊号" + x['id'] + " " + x['name'] + " " + x['startTime'] + " " + x['predTime'] + "分钟 " + x['operatingName'];
+            tmp['thirdInfo'] = "就诊号：" + x['id'] + " \n姓名：" + x['name'] + " \n开始时间：" + x['startTime'] + " \n预测手术时长：" + x['predTime'] + "分钟 \n手术名称：" + x['operatingName'];
             let ti = x['startTime'].split(":");
-            tmp['beginIndex'] = (parseInt(ti[0]) * 60 + parseInt(ti[1]) - 480) / 5;
+            tmp['beginIndex'] = (parseInt(ti[0]) * 60 + parseInt(ti[1]) - startTimeMinutes) / 5;
             tmp['operationDuration'] = x['predTime'] / 5;
             tmp['recoverDuration'] = x['recoverDuration'] / 5;
             tmp['cleanDuration'] = x['cleanDuration'] / 5;

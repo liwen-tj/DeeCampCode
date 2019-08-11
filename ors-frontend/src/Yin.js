@@ -22,7 +22,7 @@ class Yin extends React.Component {
             activeKey: '1',
             scheduleValue: '[]',
             chartData: '[]',
-            envSetting: null,
+            envSetting: {startTime: '', endTime: ''},
         };
     };
 
@@ -67,15 +67,9 @@ class Yin extends React.Component {
                     endTime: setting_json.end_time
                 }
             });
-            console.log("schedule done.")
             localStorage.setItem("schedule_output", tablevalue);
             localStorage.setItem("statistic", JSON.stringify(json.slice(length - 1, length)));
-        })
-        // var schedule_output = localStorage.getItem("schedule_output");
-        // console.log(schedule_output);
-        // this.setState({
-        //     scheduleValue: schedule_output
-        // });
+        });
     };
     
     change = (key) => {
