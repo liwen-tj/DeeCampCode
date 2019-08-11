@@ -176,7 +176,6 @@ def Scheduler(input_json, input_config):
 
     length_sum = len(temple_for_startime)                                       # 绑定了时间的人数
 
-
     Encoding = 'RI'                                          # 编码方式为实数                                           # 染色体解码后得到的变量是离散的
     NIND = 40                                              # 种群规模
 
@@ -187,7 +186,7 @@ def Scheduler(input_json, input_config):
     # 生成问题对象
     Field = ea.crtfld(Encoding, problem.varTypes, problem.ranges, problem.borders)  # 创建区域描述器
     population = ea.Population(Encoding, Field, NIND)             # 创建种群对象
-    x_chuandai = 20
+    x_chuandai = 30
     id_trace = (np.zeros((x_chuandai, num - length_sum)) * np.nan)  # 定义变量记录器，记录决策变量值，初始值为nan
     # problem, population, id_trace, n_x, list_jiao, list_start_3, list_operation, list_sleepy, list_index_or_3, list_doctID, list_clean, list_cha_start_time
     Algorithm_1 = Algorithm(problem, population, id_trace, n_x, list_jiao, list_start_3, list_operation, list_sleepy, list_index_or_3, list_doctID, list_clean, list_cha_start_time)            # 实例化一个算法模板对象
@@ -267,7 +266,6 @@ def Scheduler(input_json, input_config):
     "overtimeRatio": overtimeRatio
     }
 
-    # output_overall = json.dumps([output_overall])
     return output_json, output_overall
 
 if __name__ == '__main__':

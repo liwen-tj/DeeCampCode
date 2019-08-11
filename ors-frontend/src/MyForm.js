@@ -4,22 +4,22 @@ import 'antd/dist/antd.css';
 import API from "./utils/api";
 import Headers from "./utils/headers";
 import moment from 'moment';
+moment.locale('zh-cn'); 
 
 const format = 'HH:mm';
-
 class Myform extends React.Component {
+    
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                localStorage.setItem("setting", JSON.stringify(values));
-                let arr = JSON.parse(localStorage.getItem("setting"));
-                console.log(arr);
                 fetch(API + '/predict', Headers(values)).then(res => {
                     if (res.status === 200) {
                         return res.json();
                     }
                 }).then(function (json) {
+                    console.log(JSON.stringify(values));
+                    localStorage.setItem("setting", JSON.stringify(values));
                     window.location.href = 'http://localhost:3000/schedule';
                 });
             }
@@ -28,8 +28,8 @@ class Myform extends React.Component {
 
 
     render() {
+        moment().utcOffset(480);
         const { getFieldDecorator } = this.props.form;
-        
         const props = {
             name: 'file',
             action: 'http://127.0.0.1:5000/predict',
@@ -61,7 +61,7 @@ class Myform extends React.Component {
                 <Form.Item labelCol={{ span: 10 }} wrapperCol={{ span: 10, offset: -1 }} label="上班时间">
                     {getFieldDecorator('start_time', {
                         rules: [{ required: true, message: '请输入上班时间！' }],
-                    })(<TimePicker defaultOpenValue={moment("08:00", "HH:mm")} format={format} minuteStep={30}/>)}
+                    })(<TimePicker defaultOpenValue={moment("08:00", "HH:mm")} format={format} minuteStep={30} />)}
                 </Form.Item>
 
                 <Form.Item labelCol={{ span: 10 }} wrapperCol={{ span: 10, offset: -1 }} label="下班时间">
@@ -88,7 +88,7 @@ class Myform extends React.Component {
                     })(<InputNumber min={1} precision={0.1} />)}
                 </Form.Item>
 
-                <Form.Item wrapperCol={{ span: 22, offset: 5 }}>
+                <Form.Item wrapperCol={{ span: 15, offset: 5 }}>
                     {getFieldDecorator('file', {
                         rules: [{ required: true, message: '请上传csv文件' }],
                     })(<Upload {...props}>

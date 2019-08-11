@@ -176,14 +176,21 @@ class Algorithm(ea.Algorithm):
         # 开始进化，设置currentGen为0
         while self.terminated(population, id_1) == False:
             # 若需要继续进化，那么有
-            bestIdx = np.argmax(population.FitnV, axis = 0)        # 得到当代的最优个体的索引, 设置axis=0可使得返回一个向量
-            studPop = population[np.tile(bestIdx, (NIND//2))]      # 复制最优个体NIND//2份，组成一个“种马种群”
-            restPop = population[np.where(np.array(range(NIND)) != bestIdx)[0]]                   # 得到除去精英个体外其它个体组成的种群
+
+            bestIdx = np.argmax(population.FitnV, axis=0)  # 得到当代的最优个体的索引, 设置axis=0可使得返回一个向量
+            best_id = np.tile(id_1[bestIdx], (NIND // 2, 1))
+            studPop = population[np.tile(bestIdx, NIND // 2)]  # 复制最优个体NIND//2份，组成一个“种马种群”
+            restPop = population[np.where(np.array(range(NIND)) != bestIdx)[0]]
+            # 得到除去精英个体外其它个体组成的种群
             # 选择个体，以便后面与种马种群进行交配
+            restid = id_1[np.where(np.array(range(NIND)) != bestIdx)[0]]
+            id_temp = restid[ea.selecting(self.selFunc, restPop.FitnV, (NIND - studPop.sizes))]
             tempPop = restPop[ea.selecting(self.selFunc, restPop.FitnV, (NIND - studPop.sizes))]
             # 将种马种群与选择出来的个体进行合并
             population = studPop + tempPop
+            id_1 = np.vstack((best_id, id_temp))
             # 进行进化操作
+
             population.Chrom = ea.recombin(self.recFunc, population.Chrom, self.pc)                  # 重组
             population.Chrom, id_1 = self.problem.intersect(population.Chrom, id_1, self.pc)         # 重组
 
