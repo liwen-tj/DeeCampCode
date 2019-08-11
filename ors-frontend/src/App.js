@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Drawer, Icon, message, Upload } from 'antd';
-import background from './img/back1.jpg';
 import './App.css';
 import 'antd/dist/antd.css';
 import MyForm from './MyForm';
+import name from './img/name2.png';
 class App extends React.Component {
 
   state = { visible: false };
@@ -52,22 +52,25 @@ class App extends React.Component {
       },
     };
     return (
-      <div className="App" style={{ backgroundImage: `url(${background})` }}>
-        <div className="page">
-          <div className="head">
-            <Upload {...props}>
-              <Button className="button1" type="primary" size="large">
-                <Icon type="upload" /> 上传历史患者信息表
+      <div className="App" >
+        <img src={name} alt="name" style={{width:"100%"}}/>
+        <div className="head">
+          <Upload {...props}>
+            <Button className="button1 GradientButton" type="primary" size="large">
+              <Icon type="upload" /> 上传历史患者信息表
               </Button>
-            </Upload>
-            <Button className="button2" type="primary" size="large" onClick={this.showDrawer}>构建调度表</Button>
-          </div>
+          </Upload>
+          <Button className="button2 GradientButton" type="primary" size="large" onClick={this.showDrawer}>
+            构建调度表
+              </Button>
           <Drawer
+            width="20%"
             title="配置信息"
             placement="right"
             closable={true}
             onClose={this.onClose}
             visible={this.state.visible}
+            className="myDrawer"
           >
             <MyForm />
           </Drawer>

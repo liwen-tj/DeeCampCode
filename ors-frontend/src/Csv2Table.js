@@ -189,6 +189,7 @@ class EditableTable extends React.Component {
                 width: '7%',
                 //editable: true,
                 ...this.getColumnSearchProps('id'),
+
             },
             {
                 title: '姓名',
@@ -249,6 +250,7 @@ class EditableTable extends React.Component {
                 width: '10%',
                 editable: true,
                 defaultSortOrder: 'descend',
+                className:"predTime",
                 sorter: (a, b) => a.predTime - b.predTime,
             },
             {
@@ -256,12 +258,14 @@ class EditableTable extends React.Component {
                 dataIndex: 'orId',
                 width: '5%',
                 editable: true,
+                className:"orId",
             },
             {
-                title: '开始时间',
+                title: '开始时间(XX:XX)',
                 dataIndex: 'startTime',
                 width: '10%',
                 editable: true,
+                className:"startTime",
             },
         ];
 
@@ -309,22 +313,21 @@ class EditableTable extends React.Component {
         return (
             <div>
                 <div>
-                    <p className="wordFont">患者信息表（可修改预测手术时长，手术室号，开始时间）</p>
-                </div>
-
-                <Table
-                    components={components}
-                    rowClassName={() => 'editable-row'}
-                    bordered
-                    dataSource={dataSource}
-                    columns={columns}
-                />
-
+                    <p className="wordFont"><Icon type="solution" />&nbsp;&nbsp;患者信息表（可修改预测手术时长，手术室号，开始时间）</p>
             </div>
+
+              <Table
+                  components={components}
+                  rowClassName={() => 'editable-row'}
+                  bordered
+                  dataSource={dataSource}
+                  columns={columns}
+              />
+
+            </div >
 
         );
     }
 }
 
-//ReactDOM.render(<EditableTable />, document.getElementById('root'));
 export default EditableTable;

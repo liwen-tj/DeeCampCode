@@ -1,3 +1,38 @@
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+::-webkit-scrollbar  
+{  
+    width: 10px;  /*滚动条宽度*/
+    height: 20px  /*滚动条高度*/
+}  
+.display-linebreak {
+  white-space: pre;
+}
+/*定义滚动条轨道 内阴影+圆角*/  
+::-webkit-scrollbar-track  
+{  
+    /*滚动条的背景区域的内阴影*/
+    box-shadow:0px 1px 3px rgba(0,0,0,0.3) inset;
+
+    /*滚动条的背景区域的圆角*/
+    border-radius: 10px;  
+
+    /*滚动条的背景颜色*/
+    background-color: #717483;
+}  
+  
+/*定义滑块 内阴影+圆角*/  
+::-webkit-scrollbar-thumb  
+{  
+    /*滚动条的内阴影*/
+    box-shadow:0px 1px 3px rgba(0,0,0,0.3) inset;
+
+    /*滚动条的圆角*/
+    border-radius: 10px;  
+
+    /*滚动条的背景颜色*/
+    background-color: #ffffff;  
+}  
+
 .OperationSchedule{
   overflow:auto;
   height:500px;
@@ -34,6 +69,7 @@
   vertical-align: top;
 }
 
+
 @font-face {
     font-family: 'baoziFont'; /* 自定义的字体名称; */
     src: url('./utils/SOURCEHANSANSCN-EXTRALIGHT.OTF') format('truetype');  /* 自定义的字体的存放路径、格式; */
@@ -48,7 +84,7 @@
   position: sticky;
   left:0;
   font-family: "baoziFont";
-  font-size: "16px";
+  font-size: 16px;
 }
 
 .timePoint {
@@ -60,7 +96,6 @@
   left: -4px;
   bottom: -4px;
   font-family:"baoziFont";
-  font-size: "30px";
 }
 
 .timeTag {
@@ -70,7 +105,7 @@
   bottom: 0;
   z-index: 3;
   font-family:"baoziFont";
-  font-size: "30px";
+  /*font-size: 30px;*/
 }
 
 .quarterCell {
@@ -121,4 +156,15 @@
 .stickyRow {
   position:sticky;
   top:0;
+}
+.ant-tag-has-color{
+  color:#171E43 !important;
+}
+.previewButton{
+  border: 0px;
+}
+
+
+.endTimeCell {
+  border-left:1px solid #EB84C0;
 }

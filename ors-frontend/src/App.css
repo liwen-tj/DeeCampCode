@@ -1,66 +1,51 @@
 .App {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 240%;
   min-width: 1000px;
-  z-index:10;
+  z-index: 10;
   zoom: 1;
-  background-color: #fff;
   background-repeat: no-repeat;
   background-size: cover;
   -webkit-background-size: cover;
   -o-background-size: cover;
   background-position: center 0;
+  background-Image: url('./img/back.jpg');
 }
-
-.page {
-  display: flex;
-  flex-direction: column;
-}
-
 .head {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  margin-top: -20%;
   /*font-size: calc(10px + 2vmin);*/
   /*color: white;*/
 }
 
-.App-back2 {
-  background-image: url('/img/back.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100%;
+.ant-drawer-content{
+  background-color: #f5f5f5e6 !important;
+}
+.ant-btn-primary {
+  background: linear-gradient(to right, #4f41e1, #508eee) !important;
+  /* border-color: #ffffff */
+  
 }
 
 
 .button1 {
-  margin-top: 700px;
-  margin-left: 300px;
+  background: linear-gradient(to right, #A871EA, #EA83BF) !important;
+  border: 0px !important;
+  margin-left: 80%;
   border-radius: 8px;
   width: 250px;
 }
 
 .button2 {
-  margin-top: 700px;
-  margin-left: 200px;
+  margin-left: 20%;
+  border: 0px !important;
   width: 250px;
 }
-
-.App-link {
-  color: #61dafb;
-}
-
-.bottom_text {
-  color: azure;
-  margin-top: 150px;
-  text-align: center;
-  font-size: 18px;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -68,4 +53,14 @@
   to {
     transform: rotate(360deg);
   }
+}
+.ant-drawer-wrapper-body{
+  overflow: hidden !important;
+}
+.myDrawer div.ant-drawer-content{
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+.myDrawer div.ant-drawer-header{
+  background: rgba(255, 255, 255, 0.6) !important;
+  height:11%;
 }

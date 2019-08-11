@@ -7,7 +7,10 @@ import json
 import csv
 from model.predict.yuce import yuce
 from utils.csv2pdf import csv2pdf
-
+from model.schedule.save.MultiScheduler import Scheduler
+from model.predict.jie import jieshi
+from faker import Faker
+f=Faker(locale='zh_CN')
 app = Flask(__name__)
 CORS(app)
 
@@ -21,10 +24,13 @@ def fake_predict():
 def hospital_setting():
     file = request.files['file']
     raw_data = pd.read_csv(file, index_col=0)
+    jieshi_data = jieshi(raw_data)
     result_data = yuce(raw_data).reset_index()
     result_data = result_data.loc[:, ["就诊号","性别","年龄（天）","当前科室","手术名称","医生","手术时长(分钟)","麻醉方式","手术级别"]]
     result_data.columns = ["id","gender","age","department","operatingName","doctorName","predTime","anaesthetic","rank"]
     result_data.insert(1, "name", result_data["doctorName"])
+    for i in range(len(result_data)):
+        result_data["name"][i] = f.name()
     result_data["key"] = range(len(result_data))
     result_data["orId"] = ""
     result_data["startTime"] = ""
@@ -33,11 +39,16 @@ def hospital_setting():
     key = result_data.key
     result_data = result_data.drop("key", axis=1)
     result_data.insert(0, "key", key)
-    print(result_data.to_json(orient="records",force_ascii=False))
-    return result_data.to_json(orient="records",force_ascii=False)
+    data = {}
+    data["predict"] = result_data.to_json(orient="records", force_ascii=False)
+    data["jieshi"] = jieshi_data
+    # print(result_data.to_json(orient="records",force_ascii=False))
+    # return data.to_json(orient="records", force_ascii=False)
+    return json.dumps(data, ensure_ascii=False)
 
 @app.route('/schedule', methods=['POST'])
 def table():
+    print("schedule executing...")
     input_overall = request.get_json()
     input_length = len(input_overall)
     # 患者信息
@@ -45,57 +56,24 @@ def table():
     # 环境变量
     input_config = input_overall[-1]
 
-    output_json, output_overall = fakeSchefule(input_json, input_config)
-    print(output_json, output_overall)
-    output_json.append(output_overall)
+    input_config['start_time'] = input_config['start_time'][11:16]
+    input_config['start_time'] = list(input_config['start_time'])
+    input_config['start_time'][1] = str((int(input_config['start_time'][1]) + 8) % 24)
+    input_config['start_time'] = ''.join(input_config['start_time'])
+    input_config['end_time'] = input_config['end_time'][11:16]
+    input_config['end_time'] = list(input_config['end_time'])
+    input_config['end_time'][1] = str((int(input_config['end_time'][1]) + 8) % 24 )
+    input_config['end_time'] = ''.join(input_config['end_time'])
+    # print(input_config)
+
+    output_json, output_overall = Scheduler(input_json, input_config)
     print(output_json)
-
+    # print(output_json, output_overall)
+    output_json = json.loads(output_json)
+    output_json.append(output_overall)
+    # print(output_json)
+    print("schedule done")
     return jsonify(output_json)
-
-def fakeSchefule(input_json, input_config):
-    output_json = [
-        {
-            "key": "0",
-            "id": "1",
-            "name": "尹小帆",
-            "gender": "男",
-            "age": "70",
-            "department": "心血管科",
-            "operatingName": "心脏搭桥手术",
-            "doctorName": "李四",
-            "predTime": "120",
-            "anaesthetic": "全身麻醉",
-            "rank": "2",
-            "orId": "10",
-            "startTime": "8:00",
-            "recoverDuration": 15,
-            "cleanDuration": 20,
-        }, {
-            "key": "1",
-            "id": "2",
-            "name": "司徒",
-            "gender": "女",
-            "age": "23",
-            "department": "妇产科",
-            "operatingName": "剖腹产手术",
-            "doctorName": "王小二",
-            "predTime": "100",
-            "anaesthetic": "局部麻醉",
-            "rank": "1",
-            "orId": "7",
-            "startTime": "9:00",
-            "recoverDuration": 15,
-            "cleanDuration": 20,
-        }
-    ]
-    output_overall = {
-        "orRatio": "0.99999",
-        "recoverRoomRatio": "0.8",
-        "extraHours": [4, 5, 6],
-        "extraHourRatio": [0.4, 0.2, 0.9],
-    }
-
-    return output_json, output_overall
 
 @app.route('/preview', methods=['POST'])
 def preview_pdf():
@@ -105,7 +83,7 @@ def preview_pdf():
     with open(csv_file, 'w') as csvfile:
         fieldnames = ['orId', 'startTime', 'predTime', 'id', 'name',
                       'gender', 'age', 'operatingName', 'department', 
-                      'doctorName', 'anaesthetic', 'recoverDuration', 'cleanDuration']
+                      'doctorName', 'anaesthetic', 'recoverDuration', 'cleanDuration', 'key', 'rank']
         headername = {
             'orId': '手术室',
             'startTime': '开始时间', 
@@ -119,7 +97,9 @@ def preview_pdf():
             'doctorName': '医生', 
             'anaesthetic': '麻醉方式', 
             'recoverDuration': '恢复时间',  
-            'cleanDuration': '清洁时间'
+            'cleanDuration': '清洁时间',
+            'key': 'key',
+            'rank': 'rank'
         }
         
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)

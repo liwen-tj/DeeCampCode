@@ -1,0 +1,43 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD:.idea/DeeCampCode-master-2.iml
+=======
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
+=======
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/ors-frontend/node_modules/workbox-build/src/templates" />
+      </list>
+    </option>
+  </component>
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="Unittests" />
+  </component>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="jdk" jdkName="Python 3.6_test (python36)" jdkType="Python SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="Unittests" />
+  </component>
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936:ors_backend/model/schedule/save/.idea/新建文件夹.iml
+=======
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
+=======
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
+</module>

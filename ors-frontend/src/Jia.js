@@ -1,8 +1,11 @@
-﻿import React, {Component} from 'react';
+﻿import React, { Component } from 'react';
 import './Jia.css';
 import { Tooltip, Drawer, Button } from 'antd';
 import { Bar as BarChart, Doughnut } from 'react-chartjs-2';
 import API from "./utils/api";
+import Legend from "./Legend";
+import { PredictChart } from './myChart';
+import * as moment from "moment";
 
 const unitPx = 15;
 
@@ -20,7 +23,11 @@ class OperationItem extends Component {
             visible: false,
         });
     };
+
+
     render() {
+        console.log(this.props.operationDuration, this.props.recoverDuration, this.props.cleanDuration);
+
         return (<div className="OperationItem"
             style={{ left: this.props.beginIndex * unitPx + "px" }}>
             <div className="TimeTag">
@@ -36,6 +43,7 @@ class OperationItem extends Component {
             <div className="OperationItemBody"
                 style={{ width: this.props.cleanDuration * unitPx + "px", background: '#74EDDA' }}>
             </div>
+
             <div className="TimeTag">
             </div>
             <Drawer
@@ -44,87 +52,108 @@ class OperationItem extends Component {
                 closable={false}
                 onClose={this.onClose}
                 visible={this.state.visible}
+                width="30%"
             >
-                <p>{this.props.thirdInfo}</p>
+
+                <div className="display-linebreak">{this.props.thirdInfo}</div>
+                <PredictChart />
             </Drawer>
         </div>);
     }
 }
 
 function OperationScheduleTable(props) {
-        return (<div>
-            <div className={"OperationSchedule"}>
-                <table style={{tableLayout: "fixed", width: "200px"}}>
-                    {/*-------------------横轴------------------*/}
-                    <thead className={"stickyRow"}>
-                        <tr className={"stickyRow"}>
-                            <th className={"stickyRow bedInfo scheduleHeader"} style={{zIndex: 4}}>{null}</th>
-                            {[...Array(64).keys()].map(x => {
-                                return <th className={"stickyRow scheduleHeader quarterCell"} key={x}>
-                                    <div style={{width: "100%", height: "100%", position: "relative"}}>
-                                        <p className={"timeTag"}>
-                                            {!(x % 2) ? (("0" + (Math.floor(x / 4) + 8)).slice(-2) + ":" + (!(x % 4) ? "00" : "30")) : null}
-                                        </p>
-                                        {!(x % 4) ? <div className={"timePoint"}>{null}</div> : null}
-                                    </div>
-                                </th>
-                            })}
-                        </tr>
-                    </thead>
-                    {/*-------------------横轴------------------*/}
-                    <tbody>
-                        {props.schedules.map((bedSchedule, bedIdx) => {
-                            return ([
-                                <tr key={"space" + bedIdx} className={"stickyRow"}>
-                                    <td className={"bedInfo spaceRow"}>{null}</td>
-                                    {[...Array(64).keys()].map(y => {
-                                        return <td className={"quarterCell spaceRow"} key={y}>{null}</td>
-                                    })}
-                                </tr>,
-                                <tr key={"data" + bedIdx} className={"stickyRow"}>
-                                    {/*-------纵轴-------*/}
-                                    <td className={"bedInfo"}>{bedSchedule.roomInfo}</td>
-                                    {/*-------纵轴-------*/}
-                                    <td className={"quarterCell dataRow"}>
-                                        <div className={"BedScheduleTd"}>
-                                            {
-                                                bedSchedule.operation.map((x, y) => {
-                                                    return <OperationItem key={y}
-                                                                          patientName={x.patientName}
-                                                                          beginIndex={x.beginIndex}
-                                                                          operationDuration={x.operationDuration}
-                                                                          secondInfo={x.secondInfo}
-                                                                          thirdInfo={x.thirdInfo}
-                                                                          recoverDuration={x.recoverDuration}
-                                                                          cleanDuration={x.recoverDuration} />
-                                                })
-                                            }
-                                        </div>
-                                    </td>
-                                    {[...Array(63).keys()].map(y => {
-                                        return <td className={"quarterCell dataRow"} key={y}>{null}</td>
-                                    })}
-                                </tr>
-                            ])
+    let startTime = props.envSetting.startTime;
+    let endTime = props.envSetting.endTime;
+    // let startTime = moment(props.envSetting.startTime).format('HH:mm');
+    // let endTime = moment(props.envSetting.endTime).format('HH:mm');
+    // console.log(startTime);
+    // console.log(endTime);
+
+    let workTimeRange = (moment(endTime) - moment(startTime)) / 60000 / unitPx;
+
+    console.log('OperationScheduleTable', workTimeRange);
+    let timeQuantum = 24 * 60 / unitPx;
+    return (<div>
+        <div className={"OperationSchedule"}>
+            <table style={{ tableLayout: "fixed", width: "200px" }}>
+                {/*-------------------横轴------------------*/}
+                <thead className={"stickyRow"}>
+                    <tr className={"stickyRow"}>
+                        <th className={"stickyRow bedInfo scheduleHeader"} style={{ zIndex: 4 }}>{null}</th>
+                        {[...Array(timeQuantum).keys()].map(x => {
+                            let timePoint = moment(startTime).add(unitPx * x, 'm').format('HH:mm');
+                            return <th key={x}
+                                className={"stickyRow scheduleHeader quarterCell" + (workTimeRange === x ? " endTimeCell" : "")}>
+                                <div style={{ width: "100%", height: "100%", position: "relative" }}>
+                                    <p className={"timeTag"}>
+
+                                        {timePoint.match(/[30]0$/) ? timePoint : null}
+                                    </p>
+                                    {timePoint.endsWith('00') ? <div className={"timePoint"}>{null}</div> : null}
+                                </div>
+                            </th>
                         })}
-                        <tr className={"stickyRow"}>
-                            <td className={"bedInfo"}>{null}</td>
-                            {[...Array(64).keys()].map(y => {
-                                return <td className={"quarterCell spaceRow"} key={y}>{null}</td>
-                            })}
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>)
+                    </tr>
+                </thead>
+                {/*-------------------横轴------------------*/}
+                <tbody>
+                    {props.schedules.map((bedSchedule, bedIdx) => {
+                        return ([
+                            <tr key={"space" + bedIdx} className={"stickyRow"}>
+                                <td className={"bedInfo spaceRow"}>{null}</td>
+                                {[...Array(timeQuantum).keys()].map(y => {
+                                    return <td className={"quarterCell spaceRow" + (workTimeRange === y ? " endTimeCell" : "")} key={y}>{null}</td>
+                                })}
+                            </tr>,
+                            <tr key={"data" + bedIdx} className={"stickyRow"}>
+                                {/*-------纵轴-------*/}
+                                <td className={"bedInfo"}>{bedSchedule.roomInfo}</td>
+                                {/*-------纵轴-------*/}
+                                <td className={"quarterCell dataRow"}>
+                                    <div className={"BedScheduleTd"}>
+                                        {
+                                            bedSchedule.operation.map((x, y) => {
+                                                return <OperationItem key={y}
+                                                    patientName={x.patientName}
+                                                    beginIndex={x.beginIndex}
+                                                    operationDuration={x.operationDuration}
+                                                    secondInfo={x.secondInfo}
+                                                    thirdInfo={x.thirdInfo}
+                                                    recoverDuration={x.recoverDuration}
+                                                    cleanDuration={x.cleanDuration}
+                                                    jieshi_key={x.jieshi_key} />
+                                            })
+                                        }
+                                    </div>
+                                </td>
+                                {[...Array(timeQuantum - 1).keys()].map(y => {
+                                    return <td className={"quarterCell dataRow"} key={y}>{null}</td>
+                                })}
+                            </tr>
+                        ])
+                    })}
+                    <tr className={"stickyRow"}>
+                        <td className={"bedInfo"}>{null}</td>
+                        {[...Array(timeQuantum).keys()].map(y => {
+                            return <td className={"quarterCell spaceRow" + (workTimeRange === y ? " endTimeCell" : "")} key={y}>{null}</td>
+                        })}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>)
 }
 
 class Jia extends Component {
     constructor(props) {
         super(props);
     };
-    
+
     preview = () => { // 预览
+        let myscheduleValue = JSON.parse(this.props.scheduleValue);
+        let values1 = myscheduleValue.sort(this.compare("orId", "startTime"));
+        // console.log(values1);
         fetch(API + '/preview', {
             method: 'POST',
             headers: {
@@ -134,7 +163,7 @@ class Jia extends Component {
                 'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
             },
             responseType: 'blob',
-            body: JSON.stringify(this.state.sortdata)
+            body: JSON.stringify(values1)
         }).then(res => {
             if (res.status === 200) {
                 return res.blob()
@@ -164,24 +193,27 @@ class Jia extends Component {
 
     genSchedules(data) { // data: values1
         if (data.length == 0) { return [] }
+
         let orid = data[0]['orId'];
         let index = 0;
         let result = [{ 'roomInfo': 'Room ' + orid, 'operation': [] }];
+        let startTime = moment(this.props.envSetting.startTime).format('HH:mm');
+        let startTimeArray = startTime.split(":");
+        let startTimeMinutes = parseInt(startTimeArray[0]) * 60 + parseInt(startTimeArray[1]);
+        console.log(startTimeMinutes);
+
         for (var dataindex in data) {
             let x = data[dataindex];
-            console.log(x);
-            console.log(result);
-            console.log('---------------------\n');
             let tmp = {};
+            tmp['jieshi_key'] = x['key'];
             tmp['patientName'] = x['name'] + " " + x['startTime'];
             tmp['secondInfo'] = x['name'] + " " + x['startTime'] + " " + x['predTime'] + "分钟 " + x['operatingName'];
-            tmp['thirdInfo'] = "就诊号" + x['id'] + " " + x['name'] + " " + x['startTime'] + " " + x['predTime'] + "分钟 " + x['operatingName'];
+            tmp['thirdInfo'] = "就诊号：" + x['id'] + " \n姓名：" + x['name'] + " \n开始时间：" + x['startTime'] + " \n预测手术时长：" + x['predTime'] + "分钟 \n手术名称：" + x['operatingName'];
             let ti = x['startTime'].split(":");
-            tmp['beginIndex'] = (parseInt(ti[0]) * 60 + parseInt(ti[1]) - 480) / 5;
+            tmp['beginIndex'] = (parseInt(ti[0]) * 60 + parseInt(ti[1]) - startTimeMinutes) / 5;
             tmp['operationDuration'] = x['predTime'] / 5;
             tmp['recoverDuration'] = x['recoverDuration'] / 5;
             tmp['cleanDuration'] = x['cleanDuration'] / 5;
-
             if (x['orId'] == orid) {
                 result[index]['operation'].push(tmp);
             }
@@ -194,86 +226,21 @@ class Jia extends Component {
                 });
             }
         }
+        console.log(result);
         return result;
     }
 
-    render(){
-        let values = [ // 数据从localStorage中取出来
-            {
-                "key": 3, // 表格编号
-                "id": "1",
-                "name": "张三",
-                "gender": "男",
-                "age": "70",
-                "department": "心血管科",
-                "operatingName": "心脏搭桥手术",
-                "anaesthetic": "全身麻醉",
-                "doctorName": "李四",
-                "predTime": 120, // 分钟
-                "orId": 1, //从1开始
-                "startTime": "15:30",
-                "recoverDuration": 20, // 分钟
-                "cleanDuration": 20 // 分钟
-            },
-            {
-                "key": 4,
-                "id": "2",
-                "name": "王二",
-                "gender": "女",
-                "age": "23",
-                "department": "妇产科",
-                "operatingName": "剖腹产手术",
-                "anaesthetic": "全身麻醉",
-                "doctorName": "王小二",
-                "predTime": 100,
-                "orId": 2,
-                "startTime": "15:00",
-                "recoverDuration": 10,
-                "cleanDuration": 30
-            },
-            {
-                "key": 1,
-                "id": "1",
-                "name": "李一",
-                "gender": "男",
-                "age": "50",
-                "department": "心血管科",
-                "operatingName": "心脏搭桥手术",
-                "anaesthetic": "全身麻醉",
-                "doctorName": "王五",
-                "predTime": 100,
-                "orId": 1,
-                "startTime": "8:30",
-                "recoverDuration": 20,
-                "cleanDuration": 30
-            },
-            {
-                "key": 2,
-                "id": "1",
-                "name": "赵赵",
-                "gender": "男",
-                "age": "50",
-                "department": "心血管科",
-                "operatingName": "心脏搭桥手术",
-                "anaesthetic": "全身麻醉",
-                "doctorName": "王五",
-                "predTime": 100,
-                "orId": 1,
-                "startTime": "10:30",
-                "recoverDuration": 20,
-                "cleanDuration": 30
-            }
-        ];
-        console.log(this.props.scheduleValue);
-        console.log(typeof (this.props.scheduleValue));
+    render() {
         let myscheduleValue = JSON.parse(this.props.scheduleValue);
         let values1 = myscheduleValue.sort(this.compare("orId", "startTime"));
-        // let values1 = values.sort(this.compare("orId", "startTime"));
         let scheds = this.genSchedules(values1);
+
+        console.log(scheds);
         return (
             <div>
-                <OperationScheduleTable schedules={scheds} />
-                <Button type="primary" onClick={this.preview}>预览</Button>
+                <Legend />
+                <OperationScheduleTable schedules={scheds} envSetting={this.props.envSetting}/>
+                <Button type="primary" onClick={this.preview} style={{ marginLeft: "90%" }} className="previewButton">预览排班表</Button>
             </div>
         )
     };

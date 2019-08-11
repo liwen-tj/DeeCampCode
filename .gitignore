@@ -4,7 +4,7 @@
 /ors-frontend/node_modules
 /ors-frontend/.pnp
 /ors-frontend/.pnp.js
-
+/ors_backend/data/数据集
 # testing
 /ors-frontend/coverage
 
@@ -25,7 +25,16 @@
 # ide
 /ors-frontend/.idea/
 /ors-frontend/.vscode/
-.vscode/
-
+/.vscode/
+ors_backend/model/schedule/save/.idea
+/ors_backend/model/schedule/save/.vscode
 /ors_backend/data
 /ors_backend/model/predict/model.txt
+
+/ors-frontend/src/utils/SOURCEHANSANSCN-LIGHT.OTF
+/ors-frontend/src/utils/SOURCEHANSANSCN-EXTRALIGHT.OTF
+/ors-frontend/src/utils/SOURCEHANSANSCN-REGULAR.OTF
+/ors_backend/model/predict/modelx.cbd
+/ors_backend/model/predict/
+/ors_backend/data/ff_all_2328.csv
+/ors_backend/data/190723_HUATUO_OR_data.csv
