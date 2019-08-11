@@ -303,15 +303,14 @@ class MyProblem(ea.Problem):
         o_total_time, o_total_r_time, o_total_empty_time, overtime_work, flag = self.simulation_fixed(self.n_x, self.n_y, chorm, list_operation_4, list_clean_4, list_sleepy_4, new_fixed_dict, list_doctID_4)
         f = o_total_r_time+o_total_empty_time+overtime_work
         if flag == False:
-            f = 24 * 60 * self.n_x * 10000000
+            f = 24 * 60 * self.n_x
         # print(f, flag)
         return f, flag
 
     def aim_chuli(self, phen, id, new_fixed_dict):  # 返回当前的染色体函数
-        NIND_1 = phen.shape[0]
-        f_mubiao = np.zeros((NIND_1, 1))  # 目标函数向量
-        CV = np.zeros((NIND_1, 1))  # 限制性向量
-        for i in range(NIND_1):
+        f_mubiao = np.zeros((self.NIND, 1))  # 目标函数向量
+        CV = np.zeros((self.NIND, 1))  # 限制性向量
+        for i in range(self.NIND):
             ARRAY = id[i]    # 种群中的第i个染色体对应的index
             chorm = phen[i]  # 种群中的第i个染色体
             # 对第i个染色体进行修改
@@ -348,20 +347,11 @@ class MyProblem(ea.Problem):
         """
         for i in range(chrom_1.shape[0]):
             if np.round(np.random.uniform(0, 1, 1)) < mututation:
-                inter_individual = np.random.randint(1, chrom_1.shape[1], size=2)
-                chrom_1[i, [inter_individual[0], inter_individual[1]]] = chrom_1[
-                    i, [inter_individual[1], inter_individual[0]]]
-                id[i, [inter_individual[0], inter_individual[1]]] = id[i, [inter_individual[0], inter_individual[1]]]
-    # for i in range(chrom_1.shape[0]):
-        #     d = np.argmax(np.bincount(chrom_1[i]))
-        #     e = np.bincount(chrom_1[i])
-        #     e = np.delete(e, 0)
-        #     x = np.argmin(e)
-        #     x = x+1
-        #     y = np.where(chrom_1[i] == d)[0]
-        #     batch_size = int(y.shape[0]/4)
-        #     slice_1 = np.random.choice(y.shape[0], batch_size)
-        #     chrom_1[i][y[slice_1]] = x
+                for j in range(3):
+                    inter_individual = np.random.randint(1, chrom_1.shape[1], size=2)
+                    chrom_1[i, [inter_individual[0], inter_individual[1]]] = chrom_1[
+                        i, [inter_individual[1], inter_individual[0]]]
+                    id[i, [inter_individual[0], inter_individual[1]]] = id[i, [inter_individual[0], inter_individual[1]]]
 
 
 
