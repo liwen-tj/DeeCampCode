@@ -524,6 +524,4 @@ class PredictChart extends Component {
 
 }
 
-
-
 export { PredictChart, LineChart, Pie, LineChart2 };

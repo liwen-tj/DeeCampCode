@@ -53,9 +53,8 @@ class OperationItem extends Component {
                 visible={this.state.visible}
                 width="30%"
             >
-
+                <PredictChart jieshi_key={this.props.jieshi_key} />
                 <div className="display-linebreak">{this.props.thirdInfo}</div>
-                <PredictChart />
             </Drawer>
         </div>);
     }
@@ -237,7 +236,7 @@ class Jia extends Component {
         return (
             <div>
                 <Legend />
-                <OperationScheduleTable schedules={scheds} envSetting={this.props.envSetting}/>
+                <OperationScheduleTable schedules={scheds} envSetting={this.props.envSetting} />
                 <Button type="primary" onClick={this.preview} style={{ marginLeft: "90%" }} className="previewButton">预览排班表</Button>
             </div>
         )
