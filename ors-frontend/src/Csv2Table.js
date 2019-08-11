@@ -326,5 +326,4 @@ class EditableTable extends React.Component {
     }
 }
 
-//ReactDOM.render(<EditableTable />, document.getElementById('root'));
 export default EditableTable;

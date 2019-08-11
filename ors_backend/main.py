@@ -62,51 +62,6 @@ def table():
     print("schedule done")
     return jsonify(output_json)
 
-def fakeSchefule(input_json, input_config):
-    output_json = [
-        {
-            "key": "0",
-            "id": "1",
-            "name": "尹小帆",
-            "gender": "男",
-            "age": "70",
-            "department": "心血管科",
-            "operatingName": "心脏搭桥手术",
-            "doctorName": "李四",
-            "predTime": "120",
-            "anaesthetic": "全身麻醉",
-            "rank": "2",
-            "orId": "10",
-            "startTime": "8:00",
-            "recoverDuration": 15,
-            "cleanDuration": 20,
-        }, {
-            "key": "1",
-            "id": "2",
-            "name": "司徒",
-            "gender": "女",
-            "age": "23",
-            "department": "妇产科",
-            "operatingName": "剖腹产手术",
-            "doctorName": "王小二",
-            "predTime": "100",
-            "anaesthetic": "局部麻醉",
-            "rank": "1",
-            "orId": "7",
-            "startTime": "9:00",
-            "recoverDuration": 15,
-            "cleanDuration": 20,
-        }
-    ]
-    output_overall = {
-        "orRatio": "0.99999",
-        "recoverRoomRatio": "0.8",
-        "extraHours": [4, 5, 6],
-        "extraHourRatio": [0.4, 0.2, 0.9],
-    }
-
-    return output_json, output_overall
-
 @app.route('/preview', methods=['POST'])
 def preview_pdf():
     data = json.loads(request.data)

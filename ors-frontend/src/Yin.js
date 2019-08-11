@@ -42,7 +42,7 @@ class Yin extends React.Component {
         // let arr2 = localStorage.getItem("predict");
         delete setting_json.file;//删除json中的key:value
 
-        // console.log(setting_json);
+        console.log(setting_json);
         // console.log(predict_array);
         // console.log(Array.isArray(setting_json));
         // console.log(Array.isArray(predict_array));
