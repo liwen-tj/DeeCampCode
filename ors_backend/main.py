@@ -7,10 +7,16 @@ import json
 import csv
 from model.predict.yuce import yuce
 from utils.csv2pdf import csv2pdf
+<<<<<<< HEAD
 from model.schedule.save.MultiScheduler import Scheduler
 from model.predict.jie import jieshi
 from faker import Faker
 f=Faker(locale='zh_CN')
+=======
+from model.predict.jieshi import jieshi
+from model.schedule.save.MultiScheduler import Scheduler
+
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
 app = Flask(__name__)
 CORS(app)
 
@@ -24,7 +30,11 @@ def fake_predict():
 def hospital_setting():
     file = request.files['file']
     raw_data = pd.read_csv(file, index_col=0)
+<<<<<<< HEAD
     jieshi_data = jieshi(raw_data)
+=======
+    # print(jieshi(raw_data))
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
     result_data = yuce(raw_data).reset_index()
     result_data = result_data.loc[:, ["就诊号","性别","年龄（天）","当前科室","手术名称","医生","手术时长(分钟)","麻醉方式","手术级别"]]
     result_data.columns = ["id","gender","age","department","operatingName","doctorName","predTime","anaesthetic","rank"]
@@ -39,12 +49,17 @@ def hospital_setting():
     key = result_data.key
     result_data = result_data.drop("key", axis=1)
     result_data.insert(0, "key", key)
+<<<<<<< HEAD
     data = {}
     data["predict"] = result_data.to_json(orient="records", force_ascii=False)
     data["jieshi"] = jieshi_data
     # print(result_data.to_json(orient="records",force_ascii=False))
     # return data.to_json(orient="records", force_ascii=False)
     return json.dumps(data, ensure_ascii=False)
+=======
+    # print(result_data.to_json(orient="records",force_ascii=False))
+    return result_data.to_json(orient="records", force_ascii=False)
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
 
 @app.route('/schedule', methods=['POST'])
 def table():
@@ -58,11 +73,19 @@ def table():
 
     input_config['start_time'] = input_config['start_time'][11:16]
     input_config['start_time'] = list(input_config['start_time'])
+<<<<<<< HEAD
     input_config['start_time'][1] = str((int(input_config['start_time'][1]) + 8) % 24)
     input_config['start_time'] = ''.join(input_config['start_time'])
     input_config['end_time'] = input_config['end_time'][11:16]
     input_config['end_time'] = list(input_config['end_time'])
     input_config['end_time'][1] = str((int(input_config['end_time'][1]) + 8) % 24 )
+=======
+    input_config['start_time'][1] = str(int(input_config['start_time'][1]) + 8)
+    input_config['start_time'] = ''.join(input_config['start_time'])
+    input_config['end_time'] = input_config['end_time'][11:16]
+    input_config['end_time'] = list(input_config['end_time'])
+    input_config['end_time'][1] = str(int(input_config['end_time'][1]) + 8)
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
     input_config['end_time'] = ''.join(input_config['end_time'])
     # print(input_config)
 

@@ -24,7 +24,6 @@ class OperationItem extends Component {
         });
     };
 
-
     render() {
         console.log(this.props.operationDuration, this.props.recoverDuration, this.props.cleanDuration);
 
@@ -87,7 +86,6 @@ function OperationScheduleTable(props) {
                                 className={"stickyRow scheduleHeader quarterCell" + (workTimeRange === x ? " endTimeCell" : "")}>
                                 <div style={{ width: "100%", height: "100%", position: "relative" }}>
                                     <p className={"timeTag"}>
-
                                         {timePoint.match(/[30]0$/) ? timePoint : null}
                                     </p>
                                     {timePoint.endsWith('00') ? <div className={"timePoint"}>{null}</div> : null}
@@ -123,6 +121,7 @@ function OperationScheduleTable(props) {
                                                     recoverDuration={x.recoverDuration}
                                                     cleanDuration={x.cleanDuration}
                                                     jieshi_key={x.jieshi_key} />
+
                                             })
                                         }
                                     </div>
@@ -201,7 +200,6 @@ class Jia extends Component {
         let startTimeArray = startTime.split(":");
         let startTimeMinutes = parseInt(startTimeArray[0]) * 60 + parseInt(startTimeArray[1]);
         console.log(startTimeMinutes);
-
         for (var dataindex in data) {
             let x = data[dataindex];
             let tmp = {};

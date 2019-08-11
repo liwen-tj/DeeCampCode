@@ -130,8 +130,11 @@ def Scheduler(input_json, input_config):
     list_index_or_temple = list_index_or
     list_start_3 = np.zeros((num,), dtype=np.int)
     list_index_or_3 = np.zeros((num, 1), dtype=np.int)
+<<<<<<< HEAD
     list_clean = list_clean.astype(np.int)
     print(list_clean)
+=======
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
 
     temple_for_startime = np.where(list_start_temple != '')[0]
     for value in temple_for_startime:

@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import echarts from 'echarts/lib/echarts';
+import { transformDirection } from 'echarts/lib/util/graphic';
 
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
 class Pie extends Component {
     constructor(props) {
         super(props)
@@ -166,7 +170,7 @@ class LineChart extends Component {
     }
 
     render() {
-        console.log(JSON.parse(this.props.chartData)[0]);
+        console.log(this.props.chartData);
         let data = [0];
         if (JSON.parse(this.props.chartData).length != 0)
             data = JSON.parse(this.props.chartData)[0]["extraHours"];
@@ -271,9 +275,10 @@ class LineChart2 extends Component {
     }
 
     render() {
+        console.log(this.props.chartData);
         let data = [0];
         if (JSON.parse(this.props.chartData).length != 0)
-            data = JSON.parse(this.props.chartData)[0]["everyorRatio"];
+            data = JSON.parse(this.props.chartData)[0]["extraHours"];
         // console.log(data);
         let dataAxis = [];
         let yMax = 1;
@@ -369,78 +374,22 @@ class LineChart2 extends Component {
 
 
 class PredictChart extends Component {
-    constructor(props) {
-        super(props);
-    }
 
-    render() {
+    componentDidMount() { }
 
+    getOption() {
         let labelRight = {
             normal: {
                 position: 'right'
             }
-        }
+        };
+
         let labelLeft = {
             normal: {
                 position: 'left'
             }
         }
-        let data = [0];
-        let key = this.props.jieshi_key;
-        if (key >= 0)
-            // console.log(this.props.jieshi_key);
-            data = JSON.parse(localStorage.getItem("jieshi"))[key];
-        console.log(data);
-        data.sort(function (a, b) { return Math.abs(b[1]) - Math.abs(a[1]) });
-        let list = new Array();
-        for (let i = 0; i < 10; ++i) {
-            list.push(data[i]);
-        }
-
-        let label = new Array();
-        for (let i = 0; i < list.length; ++i) {
-            if (list[i].length > 0 && list[i][0].indexOf("手术名称") != -1)
-                label.push("手术名称");
-            else if (list[i].length > 0 && list[i][0].indexOf("入院诊断") != -1)
-                label.push("入院诊断");
-            else
-                label.push(list[i][0]);
-        }
-
-        let data2 = new Array();
-        // console.log(list);
-        let color = new Array();
-        for (let i = 0; i < list.length; ++i) {
-            let value = list[i][1];
-            let temp = {};
-            let good_color = new echarts.graphic.LinearGradient(
-                0, 0, 0, 1,
-                [
-                    { offset: 0, color: '#a871ea' },
-                    { offset: 1, color: '#ea38bf' }
-                ]
-            );
-
-            let bad_color = new echarts.graphic.LinearGradient(
-                0, 0, 0, 1,
-                [
-                    { offset: 0, color: '#4f41e1' },
-                    { offset: 1, color: '#508eee' }
-                ]
-            );
-            temp["value"] = value;
-            temp["label"] = value > 0 ? labelLeft : labelRight;
-            color[i] = value > 0 ? good_color : bad_color;
-            data2.push(temp);
-        }
-        let x_max = 0;
-        for (let i = 0; i < data2.length; ++i) {
-            if (x_max < Math.abs(data2[i]["value"]))
-                x_max = Math.abs(data2[i]["value"]);
-        }
-        x_max = Math.ceil(x_max);
-        let option = {
-
+        return {
             // title: {
             //     text: '交错正负轴标签'
             // },
@@ -465,10 +414,7 @@ class PredictChart extends Component {
                 axisLabel: {
                     interval: 0,
                     rotate: 30
-                },
-                min: x_max * -1,
-                max: x_max
-
+                }
             },
             yAxis: {
                 type: 'category',
@@ -484,19 +430,23 @@ class PredictChart extends Component {
                 splitLine: {
                     show: false
                 },
-                data: label,
+                data: ['six', 'five', 'four', 'three', 'two', 'one']
             },
             series: [{
-                name: '影响指数',
+                name: '生活费',
                 type: 'bar',
                 barWidth: 10,
                 barCategoryGap: 5,
                 itemStyle: {
                     normal: {
                         barBorderRadius: 5,
-                        color: function (params) {
-                            return color[params.dataIndex]
-                        }
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                { offset: 0, color: '#a871ea' },
+                                { offset: 1, color: '#ea38bf' }
+                            ]
+                        )
                     },
                 },
                 stack: '总量',
@@ -506,24 +456,48 @@ class PredictChart extends Component {
                         formatter: '{b}'
                     }
                 },
-                data: data2
+                data: [{
+                    value: -0.07,
+                    label: labelRight
+                },
+                {
+                    value: -0.09,
+                    label: labelRight
+                },
+                {
+                    value: 0.2,
+                    label: labelLeft
+                },
+
+                {
+                    value: 0.44,
+                    label: labelLeft
+                },
+                {
+                    value: -0.23,
+                    label: labelRight
+                },
+                {
+                    value: 0.8,
+                    label: labelLeft
+                },
+                ]
             }]
         }
 
+    };
+
+    render() {
         return (
             <div>
                 <ReactEcharts
-                    option={option}
-
+                    option={this.getOption()}
                     notMerge={true}
                     lazyUpdate={true}
                 />
             </div>
         )
-    };
-
+    }
 }
-
-
 
 export { PredictChart, LineChart, Pie, LineChart2 };

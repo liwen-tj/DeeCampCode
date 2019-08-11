@@ -10,6 +10,10 @@ import numpy as np
 import geatpy as ea
 from typing import Any
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
 class MyProblem(ea.Problem):
     def __init__(self, Num, n_x, n_y, NIND, list_of_all, morning_time, afternoon_time, dict_for_xunhuan):
         # num - length_sum, n_x, n_y, NIND, list_of_all_1, morning_time, afternoon_time, dict_for_xunhuan
@@ -208,7 +212,11 @@ class MyProblem(ea.Problem):
                 elif o_c_state[o]:  # 手术室处于清洁状态
                     if o_c_time[o] == 0:  # 结束清洁
                         o_c_state[o] = False
+<<<<<<< HEAD
                         
+=======
+
+>>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
                         if o_f_state[o]:  # 如果进行的是固定的手术，时间从固定手术字典中提取
                             o_total_time[o] += int(fixed_o[o + 1][o_fixed_order[o]][4])
                             o_fixed_order[o] += 1
