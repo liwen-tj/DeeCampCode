@@ -324,13 +324,13 @@ class EditableTable extends React.Component {
                   columns={columns}
               />
 
-//             <Table
+{/* //             <Table
 //                 components={components}
 //                 rowClassName={() => 'editable-row'}
 //                 bordered
 //                 dataSource={dataSource}
 //                 columns={columns}
-//             />
+//             /> */}
 
             </div >
 

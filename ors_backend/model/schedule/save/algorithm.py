@@ -9,12 +9,20 @@ import numpy as np
 import geatpy as ea            # 导入geatpy库
 
 class Algorithm(ea.Algorithm):
-    def __init__(self, problem, population, id_trace, n_x):
+    def __init__(self, problem, population, id_trace, n_x, list_jiao, list_start_3, list_operation, list_sleepy, list_index_or_3, list_doctID, list_clean, list_cha_start_time):
         self.name = 'fxxk'         # 算法名称
         self.problem = problem
         self.population = population
         self.selFunc = 'tour'  # 锦标赛选择算子
         self.n_x = n_x
+        self.list_jiao = list_jiao
+        self.list_start_3 = list_start_3
+        self.list_operation = list_operation
+        self.list_sleepy = list_sleepy
+        self.list_index_or_3 = list_index_or_3
+        self.list_doctID = list_doctID
+        self.list_clean = list_clean
+        self.list_cha_start_time = list_cha_start_time
         if population.Encoding == 'P':
             self.recFunc = 'xovpmx' # 部分匹配交叉
             self.mutFunc = 'mutinv' # 染色体片段互换变异
@@ -68,6 +76,64 @@ class Algorithm(ea.Algorithm):
         else:
             return True                   # 返回T，表示终止进化
     # 提取出list列表
+    def start_fx(self):
+        population = self.population      # population是传入的初始化种群
+        NIND = population.sizes           # NIND表示的是种群数目
+        NVAR = self.problem.Dim           # 得到决策变量的个数
+
+        e = np.random.randint(self.n_x, size=(NIND, NVAR))+1
+        population.Chrom = e
+        population.Phen = e
+        population.FitnV = np.ones((NVAR, 1))
+        population.CV = np.zeros((NVAR, 1))
+        population.ObjV = None
+        return population.Chrom, population.Phen, population.FitnV, population.CV, population.ObjV
+
+    def id_1_start(self):
+        population = self.population      # population是传入的初始化种群
+        NIND = population.sizes           # NIND表示的是种群数目
+        NVAR = self.problem.Dim           # 得到决策变量的个数
+        x_hang = np.arange(0, NVAR)
+        id_1 = np.array([x_hang] * NIND)
+        for i in range(NIND):
+            np.random.shuffle(id_1[i])
+        return id_1
+
+    def change_bug(self):
+        dict_chaxun = {}
+        for index, value in enumerate(self.list_jiao):  # 若该病人的手术室号和开始时间都被给定
+            list_xx = np.array(
+                [value, self.list_start_3[value], self.list_operation[value], self.list_sleepy[value], self.list_clean[value],
+                 self.list_doctID[value]])  # 需要放入字典中的值
+            key_xx = self.list_index_or_3[value][0]
+            if key_xx in dict_chaxun.keys():
+                dict_chaxun[key_xx] = np.row_stack((dict_chaxun[key_xx], list_xx))  # 将值存入dict_chaxun中
+            else:
+                dict_chaxun[key_xx] = list_xx.reshape((1, -1))  # 将值存入dict_chaxun中
+        for index, value in enumerate(self.list_cha_start_time):  # 若该病人仅有开始时间被给定
+            num_rand = np.random.randint(1, self.n_x + 1)  # 随机生成数字
+            list_yy = np.array(
+                [value, self.list_start_3[value], self.list_operation[value], self.list_sleepy[value], self.list_clean[value],
+                 self.list_doctID[value]])  # 需要放入字典的值
+            key_yy = num_rand
+            if key_yy in dict_chaxun.keys():
+                dict_chaxun[key_yy] = np.row_stack((dict_chaxun[key_yy], list_yy))  # 将值存入dict_chaxun中
+            else:
+                dict_chaxun[key_yy] = list_yy.reshape((1, -1))  # 将值存入dict_chaxun中
+
+        new_fixed_dict = {}
+        for key, value in dict_chaxun.items():
+            fixed_operation = []
+            for i in range(len(value)):
+                fixed_operation.append(int(value[i][1]))
+            fixed_operation = np.array(fixed_operation)
+            sort = np.argsort(fixed_operation)
+            new_fixed_dict[key] = []
+            for i in range(len(sort)):
+                new_fixed_dict[key].append(dict_chaxun[key][sort[i]])
+            new_fixed_dict[key] = np.array(new_fixed_dict[key])
+        return new_fixed_dict
+
 
     def run(self):
         # ==========================初始化配置===========================
@@ -79,42 +145,24 @@ class Algorithm(ea.Algorithm):
         self.var_trace = (np.zeros((self.MAXGEN, NVAR)) * np.nan)    # 定义变量记录器，记录决策变量值，初始值为nan
         # id_trace用于记录每一代训练得出的最佳子种群的ARRAY
         self.forgetCount = 0    # “遗忘策略”计数器，用于记录连续出现最优个体不是可行个体的代数/"遗忘策略"
-
-        x_hang = np.arange(0, NVAR)
-        id_1 = np.array([x_hang] * NIND)
-        for i in range(NIND):
-            np.random.shuffle(id_1[i])
+        id_1 = self.id_1_start()
         #id_1 = np.random.randint(0, NVAR, (NIND, NVAR))              # 对index记录的矩阵进行初始化
         # ===========================准备进化============================
         self.timeSlot = time.time()                                  # 开始计时
         if population.Chrom is None:
-            # 如果Chrom是空的话，那么就初始化//Chrom为待解码矩阵
-            # population.ObjV = None
-            # population.FitnV = np.ones((self.sizes,1))
-            # population.CV = np.zeros((self.sizes,1))
-            # population.Phen =
-            A = int(NVAR/self.n_x)
-            e = np.zeros((NIND, NVAR), dtype=np.int)
-            for i in range(NIND):
-                c = np.arange(0, NVAR)
-                batch_size = A
-                for j in range(self.n_x):
-                    slice_1 = np.random.choice(c.shape[0], batch_size)
-                    d = c[slice_1]
-                    e[i][d] = (j + 1)
-                    c = np.delete(c, slice_1)
-                e[i][c] = np.random.randint(1, self.n_x)
-            population.Chrom = e
-            population.Phen = e
-            population.FitnV = np.ones((NVAR, 1))
-            population.CV = np.zeros((NVAR, 1))
-            population.ObjV = None
-
-            # population.initChrom(NIND)     # 初始化种群染色体矩阵（内含染色体解码，详见Population类的源码）
-            # print('初始化Chorm矩阵：', population.Chrom)
-            # print('初始化Phen矩阵：', population.Phen)
-#        population.ObjV, population.CV = self.problem.aim_chuli(population.Phen, , population.CV) # 计算种群的目标函数值
-        population.ObjV, population.CV = self.problem.aim_chuli(population.Phen, id_1)            # 计算种群的目标函数值
+            new_fixed_dict = self.change_bug()
+            population.Chrom, population.Phen, population.FitnV, population.CV, population.ObjV = self.start_fx()
+            population.ObjV, population.CV = self.problem.aim_chuli(population.Phen, id_1, new_fixed_dict)
+            feasible = np.where(np.all(population.CV <= 0, 1))[0]
+            while True:
+                if len(feasible) > 0:
+                    break
+                else:
+                    # population.Chrom, population.Phen, population.FitnV, population.CV, population.ObjV = self.start_fx()
+                    # id_1 = self.id_1_start()
+                    new_fixed_dict = self.change_bug()
+                    population.ObjV, population.CV = self.problem.aim_chuli(population.Phen, id_1, new_fixed_dict)
+                    feasible = np.where(np.all(population.CV <= 0, 1))[0]
 
         # id_1是保留shape的形状
         # 计算种群的目标函数，输入的是CV和Phen表现矩阵
@@ -138,14 +186,9 @@ class Algorithm(ea.Algorithm):
             # 进行进化操作
             population.Chrom = ea.recombin(self.recFunc, population.Chrom, self.pc)                  # 重组
             population.Chrom, id_1 = self.problem.intersect(population.Chrom, id_1, self.pc)         # 重组
-            # population.Chrom = ea.mutate(self.mutFunc, population.Encoding, population.Chrom, population.Field, self.pm)
-            # 求进化后个体的目标函数值//变异
-            # print('进化中的Chorm矩阵：', population.Chrom)
-            # print('进化中的Phen矩阵：', population.Phen)
+
             population.Phen = population.decoding()                                  # 染色体解码
-            # population.ObjV, population.CV = self.problem.aimFuc(population.Phen, population.CV)
-            population.ObjV, population.CV = self.problem.aim_chuli(population.Phen, id_1)                   # 计算种群的目标函数值
-            # population.ObjV, population.CV = self.problem.aim_chuli(population.Chrom, id_1)
+            population.ObjV, population.CV = self.problem.aim_chuli(population.Phen, id_1, new_fixed_dict)                   # 计算种群的目标函数值
             self.evalsNum += population.sizes                                        # 更新评价次数
             population.FitnV = ea.scaling(self.problem.maxormins * population.ObjV, population.CV)           # 计算适应度
         # 处理进化记录器
@@ -164,5 +207,5 @@ class Algorithm(ea.Algorithm):
             ea.trcplot(self.obj_trace, [['种群个体平均目标函数值', '种群最优个体目标函数值']])
         # 返回最后一代种群、进化记录器、变量记录器以及执行时间
 
-        return [population, self.obj_trace, self.var_trace, self.id_trace]
+        return [population, self.obj_trace, self.var_trace, self.id_trace, new_fixed_dict]
 # 返回最后一代种群/进化记录器/执行时间

@@ -75,11 +75,12 @@ class calculte():
         o_o_time = np.zeros(self.n_x, dtype=int)  # 目前手术室内手术还需要多长时间
         o_c_time = np.zeros(self.n_x, dtype=int)  # 目前手术室内清洁还需要多长时间
         o_r_time = np.zeros(self.n_x, dtype=int)  # 目前手术室内已复苏了多长时间
+        o_c_time = np.zeros(self.n_x, dtype=int)  # 目前手术室内已清洁了多长时间
         o_empty_time = np.zeros(self.n_x, dtype=int)  # 手术室内手术没做完闲置的时间
         o_has_fixed = np.zeros(self.n_x, dtype=np.bool)  # 每个手术室是否有固定的手术
         o_fixed_num = np.zeros(self.n_x, dtype=int)  # 每个手术室有几台手术被固定
         o_fixed_order = np.zeros(self.n_x, dtype=int)  # 手术室第几台固定的手术
-        work_time = (self.afternoon_time-self.morning_time) // 5  # 日常工作时长有多少个5分钟
+        work_time = (self.afternoon_time - self.morning_time) // 5  # 日常工作时长有多少个5分钟
         result = {}
         fixed_result = {}
         for o in range(self.n_x):
@@ -172,7 +173,8 @@ class calculte():
                         if o_f_state[o]:
                             O_time = int(dict_chaxun[o + 1][o_fixed_order[o]][2])
                             o_total_time[o] += O_time
-                            fixed_result[o].append([int(dict_chaxun[o + 1][o_fixed_order[o]][0]), t * 5 - O_time, O_time])
+                            fixed_result[o].append(
+                                [int(dict_chaxun[o + 1][o_fixed_order[o]][0]), t * 5 - O_time, O_time])
                             R_time = int(dict_chaxun[o + 1][o_fixed_order[o]][3])
                             C_time = int(dict_chaxun[o + 1][o_fixed_order[o]][4])
                         else:
@@ -211,10 +213,12 @@ class calculte():
                         if o_f_state[o]:  # 如果进行的是固定的手术，时间从固定手术字典中提取
                             o_total_time[o] += int(dict_chaxun[o + 1][o_fixed_order[o]][4])
                             fixed_result[o][o_fixed_order[o]].append(int(dict_chaxun[o + 1][o_fixed_order[o]][4]))
+                            o_c_time[o] += int(dict_chaxun[o + 1][o_fixed_order[o]][4])
                             o_fixed_order[o] += 1
                             o_f_state[o] = False
                         else:
                             result[o][o_order[o]].append(c_time[o_dict[o][o_order[o]]])
+                            o_c_time[o] += c_time[o_dict[o][o_order[o]]]
                             o_total_time[o] += c_time[o_dict[o][o_order[o]]]  # 将这一台手术清洁时间计入手术室工作总时间
                             o_order[o] += 1
 
@@ -294,7 +298,9 @@ class calculte():
                             o_o_time[o] = o_time[o_dict[o][o_order[o]]] - 10  # 医生在上一个时间循环0时结束手术
                     else:
                         o_empty_time[o] += 5
-        return o_total_time.sum(), o_total_r_time.sum(), o_total_empty_time.sum(), overtime_work, result, fixed_result
+        #                o_empty_time[o] += 5
+
+        return o_total_time, o_total_r_time, o_total_empty_time, overtime_work, result, fixed_result, o_c_time
 
     def _get_list_(self, num, result, fixed_result, ARRAY, list_clean, list_operation, dict_for_xunhuan, list_start,
                    dict_for_result):
@@ -338,8 +344,8 @@ class calculte():
                         list_operation[bp] = a[j][2]  # 存入手术时间
                         list_clean[bp] = a[j][4]  # 存入清洁时间
                         sum_1 = a[j][1]
-                        hour = int(sum_1 / 60) + 8  # 对它进行求和
-                        min = int(sum_1 % 60)  # 转为hour和min
+                        hour = int((sum_1+self.morning_time) / 60)  # 对它进行求和
+                        min = int((sum_1+self.morning_time) % 60)  # 转为hour和min
                         if (min < 10):  # 转为hour:min
                             true_sum_1 = ("{}:0{}").format(hour, min)
                         else:

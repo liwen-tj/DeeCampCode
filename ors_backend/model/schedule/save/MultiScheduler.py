@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-作者：李志远
-日期：2019/8/8
+作者：desklee
+日期：2019/8/10
 功能：对ORS多人调度问题的前端页面接口
-版本：1.0
+版本：2.0
 """
 
 import json
@@ -125,7 +125,6 @@ def Scheduler(input_json, input_config):
     t_s = int(input_1['doctor'])   #最小复苏时间
     calculte_r = calculte(data, n_x, n_y, t_s, morning_time, afternoon_time)  # 实例化
     list_doctID, list_patientID, list_operation, list_sleepy, list_clean, list_start, list_index_or, list_of_all= calculte_r._process_data_(num)
-    print(list_of_all)
     list_of_all_1 = list_of_all[:]                                             # 复制list_of_all为list_of_all_1
     list_start_temple = list_start
     list_index_or_temple = list_index_or
@@ -177,42 +176,11 @@ def Scheduler(input_json, input_config):
 
     length_sum = len(temple_for_startime)                                       # 绑定了时间的人数
 
-    dict_chaxun = {}
-    for index, value in enumerate(list_jiao):                                    # 若该病人的手术室号和开始时间都被给定
-        list_xx = np.array([value, list_start_3[value], list_operation[value], list_sleepy[value], list_clean[value],
-                   list_doctID[value]])                                          # 需要放入字典中的值
-        key_xx = list_index_or_3[value][0]
-        if key_xx in dict_chaxun.keys():
-            dict_chaxun[key_xx] = np.row_stack((dict_chaxun[key_xx], list_xx))   # 将值存入dict_chaxun中
-        else:
-            dict_chaxun[key_xx] = list_xx.reshape((1, -1))                       # 将值存入dict_chaxun中
-    for index, value in enumerate(list_cha_start_time):                          # 若该病人仅有开始时间被给定
-        num_rand = np.random.randint(1, n_x+1)                                   # 随机生成数字
-        list_yy = np.array([value, list_start_3[value], list_operation[value], list_sleepy[value], list_clean[value],
-                   list_doctID[value]])                                          # 需要放入字典的值
-        key_yy = num_rand
-        if key_yy in dict_chaxun.keys():
-            dict_chaxun[key_yy] = np.row_stack((dict_chaxun[key_yy], list_yy))   # 将值存入dict_chaxun中
-        else:
-            dict_chaxun[key_yy] = list_yy.reshape((1, -1))                       # 将值存入dict_chaxun中
-
-    new_fixed_dict = {}
-    for key, value in dict_chaxun.items():
-        fixed_operation = []
-        for i in range(len(value)):
-            fixed_operation.append(int(value[i][1]))
-        fixed_operation = np.array(fixed_operation)
-        sort = np.argsort(fixed_operation)
-        new_fixed_dict[key] = []
-        for i in range(len(sort)):
-            new_fixed_dict[key].append(dict_chaxun[key][sort[i]])
-        new_fixed_dict[key] = np.array(new_fixed_dict[key])
 
     Encoding = 'RI'                                          # 编码方式为实数                                           # 染色体解码后得到的变量是离散的
-    NIND = 50                                              # 种群规模
+    NIND = 40                                              # 种群规模
 
-    problem = MyProblem(num - length_sum, n_x, n_y, NIND, list_of_all_1, morning_time, afternoon_time, new_fixed_dict,
-                        dict_for_xunhuan)
+    problem = MyProblem(num - length_sum, n_x, n_y, NIND, list_of_all_1, morning_time, afternoon_time, dict_for_xunhuan)
     # n_o为手术室数量，n_r为复苏室数量, chrom为染色体[1,3,2]表示第一台
     # 手术在1号手术室在1号手术室内做，o_time[30,100,60]表示第一台手术时长30分钟，
     # c_time表示清洁时长，r_time表示复苏时长（0或自定义最小复苏时长默认为60min）
@@ -221,10 +189,11 @@ def Scheduler(input_json, input_config):
     population = ea.Population(Encoding, Field, NIND)             # 创建种群对象
     x_chuandai = 20
     id_trace = (np.zeros((x_chuandai, num - length_sum)) * np.nan)  # 定义变量记录器，记录决策变量值，初始值为nan
-    Algorithm_1 = Algorithm(problem, population, id_trace, n_x)            # 实例化一个算法模板对象
+    # problem, population, id_trace, n_x, list_jiao, list_start_3, list_operation, list_sleepy, list_index_or_3, list_doctID, list_clean, list_cha_start_time
+    Algorithm_1 = Algorithm(problem, population, id_trace, n_x, list_jiao, list_start_3, list_operation, list_sleepy, list_index_or_3, list_doctID, list_clean, list_cha_start_time)            # 实例化一个算法模板对象
 
     Algorithm_1.MAXGEN = x_chuandai                                 # 最大遗传代数
-    [population, obj_trace, var_trace, id_trace] = Algorithm_1.run()  # 执行算法模板   #如何返回最优解
+    [population, obj_trace, var_trace, id_trace, new_fixed_dict] = Algorithm_1.run()  # 执行算法模板   #如何返回最优解
 
 
     best_gen = np.argmin(obj_trace[:, 1])  # 记录最优种群是在哪一代
@@ -246,7 +215,7 @@ def Scheduler(input_json, input_config):
     list_index_or_2 = sel_data[6]
     ARRAY_1 = ARRAY.astype(np.int)
     best_paixu_1 = best_paixu.astype(np.int)
-    o_total_time, o_total_r_time, o_total_empty_time, overtime_work, result, fixed_result = calculte_r._best_result_(
+    o_total_time, o_total_r_time, o_total_empty_time, overtime_work, result, fixed_result, o_c_time = calculte_r._best_result_(
         best_paixu_1,
         new_fixed_dict,
         list_sleepy_2,
@@ -266,13 +235,14 @@ def Scheduler(input_json, input_config):
     data['predTime'] = list_operation
 #存入csv
 #json输出内容
-    orRatio = str((o_total_time-o_total_r_time-list_clean_1.sum())/(o_total_time+o_total_empty_time))
-    cleanRatio = str(list_clean_1.sum()/(o_total_time+o_total_empty_time))
-    recoverRoomratio = str(o_total_r_time/(o_total_time+o_total_empty_time))
-    emptyRatio = str(o_total_empty_time/(o_total_time+o_total_empty_time))
+    orRatio = str((o_total_time.sum()-o_total_r_time.sum()-list_clean_1.sum())/(o_total_time.sum()+o_total_empty_time.sum()))
+    everyorRatio = (o_total_time-o_total_r_time-o_c_time)/(o_total_time+o_total_empty_time)
+    cleanRatio = str(list_clean_1.sum()/(o_total_time.sum()+o_total_empty_time.sum()))
+    recoverRoomratio = str(o_total_r_time.sum()/(o_total_time.sum()+o_total_empty_time.sum()))
+    emptyRatio = o_total_empty_time/(o_total_time+o_total_empty_time)
     extraHours = overtime_work
     extraHoursRatio = (extraHours/o_total_time)
-    overtimeRatio = str(overtime_work.sum()/o_total_time)
+    overtimeRatio = str(overtime_work.sum()/o_total_time.sum())
     # dict_2 = {}
     # dict_2["filePath"] = "output.csv"
     # dict_2["orRatio"] = orRatio                   # 手术室利用率
@@ -284,12 +254,14 @@ def Scheduler(input_json, input_config):
     # dict_2["overtimeRatio"] = overtimeRatio       # 额外加班时间
 
 # 用于饼图展示的比例：
+    data.to_csv('output.csv', sep=',', header=True)
     output_json = data.to_json(orient='records',force_ascii = False)
     output_overall = {
     "orRatio": orRatio,
+    "everyorRatio": everyorRatio.tolist(),
     "recoverRoomRatio": recoverRoomratio,
+    "emptyRatio": emptyRatio.tolist(),
     "cleanRatio": cleanRatio,
-    "emptyRatio": emptyRatio,
     "extraHours": extraHours.tolist(),
     "extraHourRatio": extraHoursRatio.tolist(),
     "overtimeRatio": overtimeRatio
@@ -298,14 +270,18 @@ def Scheduler(input_json, input_config):
     # output_overall = json.dumps([output_overall])
     return output_json, output_overall
 
-# if __name__ == '__main__':
-#     with open('data.json', 'r') as f:
-#         input_json = json.load(f)
-#     input_config = {
-#         "recover_min": 60,  # 最小恢复时间
-#         "end_time": "16:00",  # 下班时间
-#         "operRoom": 7,  # 手术室数目
-#         "recover": 3,  # 恢复室数目
-#         "start_time": "07:00"  # 上班时间
-#     }
-#     output_json, output_overall = Scheduler(input_json, input_config)
+if __name__ == '__main__':
+    with open('data.json', 'r') as f:
+        input_json = json.load(f)
+    input_config = {
+        "recover_min": 60,  # 最小恢复时间
+        "end_time": "16:00",  # 下班时间
+        "operRoom": 8,  # 手术室数目
+        "recover": 4,  # 恢复室数目
+        "start_time": "08:00"  # 上班时间
+    }
+    t1 = time.time()
+    output_json, output_overall = Scheduler(input_json, input_config)
+    t2 = time.time()
+    print('output_json:', output_json)
+    print('out_overall', output_overall)

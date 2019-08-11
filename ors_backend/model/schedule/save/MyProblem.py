@@ -12,7 +12,8 @@ from typing import Any
 
 
 class MyProblem(ea.Problem):
-    def __init__(self, Num, n_x, n_y, NIND, list_of_all, morning_time, afternoon_time, dict_chaxun, dict_for_xunhuan):
+    def __init__(self, Num, n_x, n_y, NIND, list_of_all, morning_time, afternoon_time, dict_for_xunhuan):
+        # num - length_sum, n_x, n_y, NIND, list_of_all_1, morning_time, afternoon_time, dict_for_xunhuan
         # n_x表示的是手术室的数量
         # Num表示的是此时一条染色体的数目
         # n_y表示的是复苏室的数量
@@ -34,10 +35,9 @@ class MyProblem(ea.Problem):
         self.n_y = n_y
         self.morning = morning_time
         self.afternoon = afternoon_time
-        self.dict_chaxun = dict_chaxun
         self.dict_for_xunhuan = dict_for_xunhuan
 
-    def simulation_fixed(self, n_o, n_r, chrom, o_time, c_time, r_time, fixed_o, doctors):
+    def simulation_fixed(self ,n_o, n_r, chrom, o_time, c_time, r_time, fixed_o, doctors):
         """n_o为手术室数量，n_r为复苏室数量, chrom为染色体[1,3,2]表示第一台
         手术在1号手术室在1号手术室内做，o_time[30,100,60]表示第一台手术时长30分钟，
         c_time表示清洁时长，r_time表示复苏时长（0或自定义最小复苏时长默认为60min）
@@ -69,7 +69,7 @@ class MyProblem(ea.Problem):
         o_has_fixed = np.zeros(n_o, dtype=np.bool)  # 每个手术室是否有固定的手术
         o_fixed_num = np.zeros(n_o, dtype=int)  # 每个手术室有几台手术被固定
         o_fixed_order = np.zeros(n_o, dtype=int)  # 手术室第几台固定的手术
-        work_time = (16 - 8) * 60 // 5  # 日常工作时长有多少个5分钟
+        work_time = (self.afternoon-self.morning) // 5  # 日常工作时长有多少个5分钟
 
         for o in range(n_o):  # 初始化
             o_dict[o] = np.where(chrom == o + 1)[0]
@@ -129,12 +129,10 @@ class MyProblem(ea.Problem):
                         """已经有一次判断，手术时间加清洁时间小于剩余的时间（到固定手术开始），就推入手术，不然就闲置。
                         如果这次手术要在手术室内复苏，就认为这个是不可行解."""
                         flag = False  # 时间冲突
-                        #                    print(1)
                         break
 
                     if (o_doctor == fixed_o[o + 1][o_fixed_order[o]][5]).sum() == 1:
                         flag = False  # 医生冲突
-                        #                    print(2)
                         break
 
                     o_empty_state[o] = False
@@ -298,22 +296,22 @@ class MyProblem(ea.Problem):
             if t == 287:  # 工作超过24小时
                 if o_end_state.sum() < n_o:
                     flag = False  # 超时冲突
-
+        #    print(flag)
         return o_total_time.sum(), o_total_r_time.sum(), o_total_empty_time.sum(), overtime_work.sum(), flag
 
-    def aimFunc(self, chorm, list_operation_4, list_clean_4, list_sleepy_4, list_doctID_4):
-        o_total_time, o_total_r_time, o_total_empty_time, overtime_work, flag = self.simulation_fixed(self.n_x, self.n_y, chorm, list_operation_4, list_clean_4, list_sleepy_4, self.dict_chaxun, list_doctID_4)
+    def aimFunc(self, chorm, list_operation_4, list_clean_4, list_sleepy_4, new_fixed_dict, list_doctID_4):
+        o_total_time, o_total_r_time, o_total_empty_time, overtime_work, flag = self.simulation_fixed(self.n_x, self.n_y, chorm, list_operation_4, list_clean_4, list_sleepy_4, new_fixed_dict, list_doctID_4)
         f = o_total_r_time+o_total_empty_time+overtime_work
-        if not flag:
+        if flag == False:
             f = 24 * 60 * self.n_x
         # print(f, flag)
         return f, flag
 
-    def aim_chuli(self, phen, id):  # 返回当前的染色体函数
+    def aim_chuli(self, phen, id, new_fixed_dict):  # 返回当前的染色体函数
         f_mubiao = np.zeros((self.NIND, 1))  # 目标函数向量
         CV = np.zeros((self.NIND, 1))  # 限制性向量
         for i in range(self.NIND):
-            ARRAY = id[i]  # 种群中的第i个染色体对应的index
+            ARRAY = id[i]    # 种群中的第i个染色体对应的index
             chorm = phen[i]  # 种群中的第i个染色体
             # 对第i个染色体进行修改
          #   print('ARRAY:', ARRAY)
@@ -329,11 +327,9 @@ class MyProblem(ea.Problem):
             list_sleepy_4 = sel_data_2[3]
             list_clean_4 = sel_data_2[4]
             list_start_4 = sel_data_2[5]
-            f_mubiao[i], CV[i] = self.aimFunc(chorm, list_operation_4, list_clean_4, list_sleepy_4,
-                                              list_doctID_4)  # 返回的是目标函数和CV限制矩阵
+            f_mubiao[i], CV[i] = self.aimFunc(chorm, list_operation_4, list_clean_4, list_sleepy_4,new_fixed_dict, list_doctID_4)  # 返回的是目标函数和CV限制矩阵
           #  print('此时的phen：', chorm)
           #  print('第{}次循环的目标函数值：{}'.format(i, f_mubiao[i]))
-        CV_1 = CV
         # print('此时的CV是：', CV_1.reshape((1, -1)))
         CV = np.where(CV == True, 0, 1)
         return f_mubiao, CV
@@ -356,16 +352,6 @@ class MyProblem(ea.Problem):
                     chrom_1[i, [inter_individual[0], inter_individual[1]]] = chrom_1[
                         i, [inter_individual[1], inter_individual[0]]]
                     id[i, [inter_individual[0], inter_individual[1]]] = id[i, [inter_individual[0], inter_individual[1]]]
-        # for i in range(chrom_1.shape[0]):
-        #     d = np.argmax(np.bincount(chrom_1[i]))
-        #     e = np.bincount(chrom_1[i])
-        #     e = np.delete(e, 0)
-        #     x = np.argmin(e)
-        #     x = x+1
-        #     y = np.where(chrom_1[i] == d)[0]
-        #     batch_size = int(y.shape[0]/4)
-        #     slice_1 = np.random.choice(y.shape[0], batch_size)
-        #     chrom_1[i][y[slice_1]] = x
 
 
 

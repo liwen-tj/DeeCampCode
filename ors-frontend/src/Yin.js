@@ -85,7 +85,7 @@ class Yin extends React.Component {
                 </div>
                 <Tabs activeKey={this.state.activeKey} onChange={this.change} tabBarStyle={{color:'white'}}>
                     <TabPane tab="患者总览" key="1">
-//                     <TabPane style={{background:"#202743"}} tab="患者总览" key="1">
+                     {/* <TabPane style={{background:"#202743"}} tab="患者总览" key="1"> */}
                         <div id={"editableTable"} className='predictOutput'>
                             <EditableTable pagination={{ pageSize: 10 }} scroll={{ y: 240 }} />
                         </div>
