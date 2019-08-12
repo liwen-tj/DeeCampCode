@@ -45,7 +45,7 @@ class App extends React.Component {
           console.log(info.file, info.fileList);
         }
         if (info.file.status === 'done') {
-          message.success(`${info.file.name} 首页文件上传成功`);
+          message.success(`${info.file.name} 首页文件上传成功, 已建立模型`);
         } else if (info.file.status === 'error') {
           message.error(`${info.file.name} 首页文件上传失败`);
         }

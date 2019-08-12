@@ -6,9 +6,11 @@ from werkzeug.utils import secure_filename
 import json
 import csv
 from model.predict.yuce import yuce
+from model.predict.yuce import yujiazai
 from utils.csv2pdf import csv2pdf
 from model.schedule.save.MultiScheduler import Scheduler
 from model.predict.jie import jieshi
+from model.predict.xunlian import xunlian
 from faker import Faker
 f=Faker(locale='zh_CN')
 
@@ -19,14 +21,16 @@ CORS(app)
 @app.route('/fake_upload', methods=['POST'])
 def fake_predict():
     file = request.files['file']
-    return jsonify("fake")
+    raw_data = pd.read_csv(file, index_col=0)
+    print(xunlian(raw_data))
+    return jsonify("已建立模型")
 
 @app.route('/predict', methods=['POST'])
 def hospital_setting():
     file = request.files['file']
     raw_data = pd.read_csv(file, index_col=0)
     jieshi_data = jieshi(raw_data)
-    result_data = yuce(raw_data).reset_index()
+    result_data = yuce(raw_data, modely).reset_index()
     result_data = result_data.loc[:, ["就诊号","性别","年龄（天）","当前科室","手术名称","医生","手术时长(分钟)","麻醉方式","手术级别"]]
     result_data.columns = ["id","gender","age","department","operatingName","doctorName","predTime","anaesthetic","rank"]
     result_data.insert(1, "name", result_data["doctorName"])
@@ -114,4 +118,8 @@ def preview_pdf():
 
 
 if __name__ == '__main__':
+    modely = yujiazai()
     app.run()
+
+
+

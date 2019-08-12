@@ -473,10 +473,11 @@ class PredictChart extends Component {
             yAxis: {
                 type: 'category',
                 axisLine: {
-                    show: false
+                    show: false,
                 },
                 axisLabel: {
                     show: false,
+                    interval: 30,
                 },
                 axisTick: {
                     show: false

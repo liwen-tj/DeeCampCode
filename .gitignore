@@ -34,11 +34,9 @@ ors_backend/model/schedule/save/.idea
 /ors-frontend/src/utils/SOURCEHANSANSCN-LIGHT.OTF
 /ors-frontend/src/utils/SOURCEHANSANSCN-EXTRALIGHT.OTF
 /ors-frontend/src/utils/SOURCEHANSANSCN-REGULAR.OTF
-<<<<<<< HEAD
-/ors_backend/model/predict/modelx.cbd
-/ors_backend/model/predict/
-/ors_backend/data/ff_all_2328.csv
-/ors_backend/data/190723_HUATUO_OR_data.csv
-=======
 
->>>>>>> 0e013d7631fadd2f20e65c4805fbe61741638936
+/ors_backend/model/predict/modelx
+/ors_backend/model/predict/
+/ors_backend/data/ff_all_2328_newest.csv
+/ors_backend/data/190723_HUATUO_OR_data.csv
+/ors_backend/data/数据集
