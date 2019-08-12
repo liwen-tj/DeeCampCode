@@ -181,7 +181,7 @@ class LineChart extends Component {
         }
         let option = {
             title: {
-                text: '手术室加班时间',
+                text: '手术室加班时间(分钟)',
                 textStyle: {
                     color: '#fff'
                 }
